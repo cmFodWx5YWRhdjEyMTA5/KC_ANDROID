@@ -2,15 +2,8 @@ package com.deepak.kcl.Activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,9 +11,6 @@ import com.deepak.kcl.Fragments.AccountFragment;
 import com.deepak.kcl.Fragments.ExpenseFragment;
 import com.deepak.kcl.Fragments.HomeFragment;
 import com.deepak.kcl.R;
-import com.deepak.kcl.TabFragments.CompletedFragment;
-import com.deepak.kcl.TabFragments.OngoingFragment;
-import com.deepak.kcl.TabFragments.UpcomingFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -69,5 +59,16 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.action_refresh)
+        {
+            this.finish();
+            startActivity(getIntent());
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
