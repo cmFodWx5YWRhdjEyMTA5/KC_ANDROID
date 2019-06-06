@@ -193,7 +193,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:background="@null"
-        android:src="@drawable/ic_photo_camera_black_24dp"
+        android:src="@drawable/ic_camera"
         app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
         app:layout_constraintStart_toEndOf="@+id/textInputLayout"
         app:layout_constraintTop_toTopOf="@+id/textInputLayout" />
@@ -205,7 +205,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:background="@null"
-        android:src="@drawable/ic_photo_camera_black_24dp"
+        android:src="@drawable/ic_camera"
         app:layout_constraintBottom_toBottomOf="@+id/textInputLayout4"
         app:layout_constraintStart_toEndOf="@+id/textInputLayout4"
         app:layout_constraintTop_toTopOf="@+id/textInputLayout4" />

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deepak.kcl.Activities.LoginActivity;
+import com.deepak.kcl.Activities.ProfileActivity;
 import com.deepak.kcl.R;
 
 /**
@@ -59,6 +60,7 @@ public class AccountFragment extends Fragment {
         txtAcEditprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ProfileActivity.class));
                 Toast.makeText(getActivity(), "You Clicked Edit Profile", Toast.LENGTH_SHORT).show();
             }
         });
