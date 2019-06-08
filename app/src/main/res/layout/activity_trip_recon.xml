@@ -212,18 +212,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textInputLayout4" />
 
-    <ImageButton
-        android:id="@+id/imageButton9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:background="@null"
-        android:src="@drawable/ic_add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider16" />
-
     <View
         android:id="@+id/divider27"
         android:layout_width="0dp"
@@ -367,19 +355,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout5" />
-
-    <TextView
-        android:id="@+id/textView67"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="ADD"
-        android:textColor="@color/colorongoing"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton9"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton9"
-        app:layout_constraintTop_toTopOf="@+id/imageButton9" />
 
 
 </android.support.constraint.ConstraintLayout>

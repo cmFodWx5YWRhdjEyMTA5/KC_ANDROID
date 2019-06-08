@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Activities.SplitAdvanActivity">
 
-    <TextView
-        android:id="@+id/textView69"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="ADD"
-        android:textColor="@color/colorongoing"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
-        app:layout_constraintTop_toTopOf="@+id/imageButton2" />
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="0dp"
@@ -484,7 +471,7 @@
         app:layout_constraintTop_toBottomOf="@+id/divider21" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/split_adv_imgBtnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

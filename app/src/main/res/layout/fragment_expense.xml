@@ -30,28 +30,15 @@
         app:layout_constraintTop_toBottomOf="@+id/divider30" />
 
     <ImageButton
-        android:id="@+id/imageButton10"
+        android:id="@+id/exp_imgbtn_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@null"
         android:src="@drawable/ic_add"
-        app:layout_constraintBottom_toBottomOf="@+id/textView75"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView75" />
-
-    <TextView
-        android:id="@+id/textView75"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Add New Expense"
-        android:textColor="@color/colorongoing"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton10"
         app:layout_constraintTop_toBottomOf="@+id/divider37" />
 
     <android.support.design.widget.AppBarLayout
@@ -233,11 +220,11 @@
         android:id="@+id/divider29"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView75" />
+        app:layout_constraintTop_toBottomOf="@+id/exp_imgbtn_add" />
 
     <View
         android:id="@+id/divider30"
