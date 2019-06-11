@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.deepak.kcl.Activities.LoginActivity;
 import com.deepak.kcl.Activities.ProfileActivity;
 import com.deepak.kcl.R;
+import com.deepak.kcl.Storage.SharedPrefManager;
+import com.deepak.kcl.models.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,8 +25,8 @@ public class AccountFragment extends Fragment {
     View view;
     Button btnSignOut;
     TextView txtAcUname,txtAcUemail,txtAcHome,txtAcEditprofile,txtAcTrips,txtAcReports;
+    User user;
     public AccountFragment() {
-
     }
 
     @Override
@@ -49,6 +51,10 @@ public class AccountFragment extends Fragment {
     }
 
     private void initializeView() {
+
+        user = SharedPrefManager.getInstance(getActivity()).getUser();
+        txtAcUname.setText(user.getUname());
+        txtAcUemail.setText(user.getUemail());
 
         txtAcHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,9 +88,16 @@ public class AccountFragment extends Fragment {
         btnSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
+                signOut();
             }
         });
+    }
+
+    private void signOut() {
+        SharedPrefManager.getInstance(getActivity()).clear();
+        Intent intent = new Intent(getActivity(),LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
 }

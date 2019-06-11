@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.deepak.kcl.R;
+import com.deepak.kcl.Storage.SharedPrefManager;
+import com.deepak.kcl.models.User;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -30,9 +32,10 @@ public class ProfileActivity extends AppCompatActivity {
     ImageButton btnPhotoUpload;
     CircleImageView imgProfile;
     private static int RESULT_LOAD_IMAGE = 1;
-    EditText edtUpdName,edtUpdUname,edtUpdMobile,edtUpdEmail;
+    EditText edtUpdName,edtUpdMobile,edtUpdEmail,edtIMEI1,edtIMEI2;
     Button btnUpdate,btnCancel;
-    String nm,unm,mob,email;
+    String nm,mob,email,IMEI1,IMEI2;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +44,24 @@ public class ProfileActivity extends AppCompatActivity {
         initView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(!SharedPrefManager.getInstance(this).isLoggedIn()){
+            Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    }
+
     private void initView() {
         toolbar = findViewById(R.id.profileToolbar);
         edtUpdName = findViewById(R.id.edt_upd_name);
-        edtUpdUname = findViewById(R.id.edt_upd_uname);
         edtUpdMobile = findViewById(R.id.edt_upd_mobile);
         edtUpdEmail = findViewById(R.id.edt_upd_email);
+        edtIMEI1 = findViewById(R.id.edt_upd_imei1);
+        edtIMEI2 = findViewById(R.id.edt_upd_imei2);
         btnUpdate = findViewById(R.id.btn_upd_update);
         btnCancel = findViewById(R.id.btn_upd_cancel);
         btnPhotoUpload = findViewById(R.id.btn_photo_upload);
@@ -61,6 +76,13 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
 
+        user = SharedPrefManager.getInstance(this).getUser();
+        edtUpdName.setText(user.getUname());
+        edtUpdEmail.setText(user.getUemail());
+        edtUpdMobile.setText(user.getUmobile());
+        edtIMEI1.setText(user.getUimei_no1());
+        edtIMEI2.setText(user.getUimei_no2());
+
         btnPhotoUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,10 +93,11 @@ public class ProfileActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nm = edtUpdName.getText().toString();
-                unm = edtUpdUname.getText().toString();
-                mob = edtUpdMobile.getText().toString();
-                email = edtUpdEmail.getText().toString();
+                nm = edtUpdName.getText().toString().trim();
+                mob = edtUpdMobile.getText().toString().trim();
+                email = edtUpdEmail.getText().toString().trim();
+                IMEI1 = edtIMEI1.getText().toString().trim();
+                IMEI2 = edtIMEI2.getText().toString().trim();
             }
         });
 
