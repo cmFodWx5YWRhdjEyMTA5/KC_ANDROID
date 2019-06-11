@@ -50,6 +50,12 @@ public class AccountFragment extends Fragment {
         initializeView();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        initializeView();
+    }
+
     private void initializeView() {
 
         user = SharedPrefManager.getInstance(getActivity()).getUser();

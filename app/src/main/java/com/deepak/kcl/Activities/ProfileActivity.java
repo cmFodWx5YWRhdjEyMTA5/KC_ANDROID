@@ -1,5 +1,6 @@
 package com.deepak.kcl.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,20 +12,28 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
+import com.deepak.kcl.models.LoginResponse;
 import com.deepak.kcl.models.User;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -93,11 +102,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nm = edtUpdName.getText().toString().trim();
-                mob = edtUpdMobile.getText().toString().trim();
-                email = edtUpdEmail.getText().toString().trim();
-                IMEI1 = edtIMEI1.getText().toString().trim();
-                IMEI2 = edtIMEI2.getText().toString().trim();
+               updateProfile();
             }
         });
 
@@ -107,6 +112,94 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void updateProfile() {
+        nm = edtUpdName.getText().toString().trim();
+        mob = edtUpdMobile.getText().toString().trim();
+        email = edtUpdEmail.getText().toString().trim();
+        IMEI1 = edtIMEI1.getText().toString().trim();
+        IMEI2 = edtIMEI2.getText().toString().trim();
+
+
+        if(nm.isEmpty()){
+            edtUpdName.setError("Name is Required");
+            edtUpdName.requestFocus();
+            return;
+        }
+
+        if(email.isEmpty()){
+            edtUpdEmail.setError("Email is Required");
+            edtUpdEmail.requestFocus();
+            return;
+        }
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            edtUpdEmail.setError("Enter valid Email.");
+            edtUpdEmail.requestFocus();
+            return;
+        }
+
+        if(mob.isEmpty()){
+            edtUpdMobile.setError("Mobile No. is Required");
+            edtUpdMobile.requestFocus();
+            return;
+        }
+
+        if(mob.length() < 10){
+            edtUpdMobile.setError("Enter Valid Mobile No.");
+            edtUpdMobile.requestFocus();
+            return;
+        }
+
+        if(IMEI1.isEmpty()){
+            edtIMEI1.setError("IMEI1 is Required");
+            edtIMEI1.requestFocus();
+            return;
+        }
+
+        if(IMEI1.length() < 15)
+        {
+            edtIMEI1.setError("IMEI number lenght is minimum 15");
+            edtIMEI1.requestFocus();
+            return;
+        }
+
+        if(IMEI2.length() < 15)
+        {
+            edtIMEI2.setError("IMEI number lenght is minimum 15");
+            edtIMEI2.requestFocus();
+            return;
+        }
+        Log.d("mob",String.valueOf(user.getUid()));
+        Log.d("mob",nm);
+        Log.d("mob",email);
+        Log.d("mob",mob);
+        Log.d("mob",IMEI1);
+        Log.d("mob",IMEI2);
+
+
+        Call<LoginResponse> call = RetrofitClient.getInstance().getApi().updateUser(user.getUid(),nm,email,mob,IMEI1,IMEI2);
+        
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                LoginResponse updateResponse = response.body();
+
+                Toast.makeText(ProfileActivity.this, updateResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                if(!updateResponse.isError()) {
+                    SharedPrefManager.getInstance(ProfileActivity.this).saveuser(updateResponse.getUser());
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Toast.makeText(ProfileActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void openGallery()
