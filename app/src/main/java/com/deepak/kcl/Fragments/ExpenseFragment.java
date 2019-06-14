@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +19,20 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
+import com.deepak.kcl.models.Branch;
+import com.deepak.kcl.models.BranchResponse;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,10 +46,11 @@ public class ExpenseFragment extends Fragment {
     int month;
     int dayOfMonth;
     Calendar calendar;
+    private List<Branch> branchList;
+
     public ExpenseFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,7 +101,6 @@ public class ExpenseFragment extends Fragment {
         spnSplit = dialog.findViewById(R.id.dialog_exp_spnSplit);
         imgBtnDate = dialog.findViewById(R.id.dialog_exp_imgBtnDate);
         edtDate = dialog.findViewById(R.id.dialog_exp_edtDate);
-
         edtDate.setKeyListener(null);
 
         imgBtnDate.setOnClickListener(new View.OnClickListener() {
@@ -112,14 +122,40 @@ public class ExpenseFragment extends Fragment {
             }
         });
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        Call<BranchResponse> call = RetrofitClient.getInstance().getApi().getAllBranch();
+
+        call.enqueue(new Callback<BranchResponse>() {
+            @Override
+            public void onResponse(Call<BranchResponse> call, Response<BranchResponse> response) {
+                branchList = response.body().getBranches();
+
+                Toast.makeText(getActivity(), branchList.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<BranchResponse> call, Throwable t) {
+
+            }
+        });
+
+
+       /* ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, branchNames);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spnBranch.setAdapter(spinnerArrayAdapter);*/
+/*
+     ArrayAdapter<Branch> spinnerArrayAdapter = new ArrayAdapter<Branch>(getActivity(), android.R.layout.simple_spinner_item, branchList);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spnBranch.setAdapter(spinnerArrayAdapter);*/
+
+    /*  ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 getActivity(), R.array.Branches, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnBranch.setAdapter(adapter);
+        spnBranch.setAdapter(adapter);*/
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(
                 getActivity(), R.array.SplitType, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnSplit.setAdapter(adapter1);
 
         imgBtnClose.setOnClickListener(new View.OnClickListener() {

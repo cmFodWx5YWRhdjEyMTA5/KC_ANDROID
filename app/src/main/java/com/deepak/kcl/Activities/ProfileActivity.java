@@ -1,10 +1,12 @@
 package com.deepak.kcl.Activities;
 
-import android.content.Context;
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
@@ -14,11 +16,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.deepak.kcl.Networking.RetrofitClient;
@@ -45,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button btnUpdate,btnCancel;
     String nm,mob,email,IMEI1,IMEI2;
     User user;
+    ImageView imgUpload;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnUpdate = findViewById(R.id.btn_upd_update);
         btnCancel = findViewById(R.id.btn_upd_cancel);
         btnPhotoUpload = findViewById(R.id.btn_photo_upload);
-        imgProfile = findViewById(R.id.img_profile);
+        imgProfile = findViewById(R.id.dialog_upload_imgProfile);
 
         initializeView();
     }
@@ -95,7 +101,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnPhotoUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGallery();
+                OpenUploadImageDialog();
             }
         });
 
@@ -202,6 +208,50 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    private void OpenUploadImageDialog() {
+        Button btnChoose,btnUpload;
+        ImageButton imgBtnClose;
+
+        final Dialog dialog=new Dialog(ProfileActivity.this);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_upload_image);
+        if (dialog.getWindow()!=null)
+        {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+            WindowManager.LayoutParams params=dialog.getWindow().getAttributes();
+            params.gravity= Gravity.CENTER_VERTICAL;
+        }
+
+        imgBtnClose = dialog.findViewById(R.id.dialog_upload_imgClose);
+        btnChoose = dialog.findViewById(R.id.dialog_upload_btnChoose);
+        btnUpload = dialog.findViewById(R.id.dialog_upload_btnUpload);
+        imgUpload = dialog.findViewById(R.id.dialog_upload_imgProfile);
+
+        imgBtnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+
+        btnChoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openGallery();
+            }
+        });
+
+        dialog.show();
+    }
+
     private void openGallery()
     {
         Intent i = new Intent(
@@ -234,7 +284,7 @@ public class ProfileActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            imgProfile.setImageBitmap(bmp);
+            imgUpload.setImageBitmap(bmp);
         }
     }
 

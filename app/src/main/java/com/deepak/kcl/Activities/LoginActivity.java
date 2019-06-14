@@ -70,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initialize() {
 
+        getImei();
+
         txtImeinum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +141,9 @@ public class LoginActivity extends AppCompatActivity {
     private void getImei() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             IMEI = telephonyManager.getDeviceId().toString();
+        }
+        else{
+            requestReadPhoneState();
         }
     }
 

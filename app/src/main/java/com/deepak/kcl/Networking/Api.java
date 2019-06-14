@@ -1,9 +1,11 @@
 package com.deepak.kcl.Networking;
 
+import com.deepak.kcl.models.BranchResponse;
 import com.deepak.kcl.models.LoginResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -28,4 +30,7 @@ public interface Api {
            @Field("imei1") String imei1,
            @Field("imei2") String imei2
     );
+
+    @GET("getBranches")
+    Call<BranchResponse> getAllBranch();
 }
