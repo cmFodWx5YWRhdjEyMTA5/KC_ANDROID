@@ -162,9 +162,6 @@ public class LoginActivity extends AppCompatActivity {
                     .create()
                     .show();
         }
-        else{
-            requestReadPhoneState();
-        }
     }
 
     private void requestReadPhoneState() {
@@ -202,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getImeiNumber();
+                //getImeiNumber();
                 Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();

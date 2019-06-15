@@ -8,14 +8,16 @@ public class User {
     private String umobile;
     private String uimei_no1;
     private String uimei_no2;
+    private String u_img;
 
-    public User(int uid, String uname, String uemail, String umobile, String uimei_no1, String uimei_no2) {
+    public User(int uid, String uname, String uemail, String umobile, String uimei_no1, String uimei_no2, String u_img) {
         this.uid = uid;
         this.uname = uname;
         this.uemail = uemail;
         this.umobile = umobile;
         this.uimei_no1 = uimei_no1;
         this.uimei_no2 = uimei_no2;
+        this.u_img = u_img;
     }
 
     public int getUid() {
@@ -40,5 +42,9 @@ public class User {
 
     public String getUimei_no2() {
         return uimei_no2;
+    }
+
+    public String getU_img() {
+        return u_img;
     }
 }

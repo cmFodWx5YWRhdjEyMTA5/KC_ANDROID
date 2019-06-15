@@ -47,6 +47,8 @@ public class ExpenseFragment extends Fragment {
     int dayOfMonth;
     Calendar calendar;
     private List<Branch> branchList;
+    private ArrayList<String> branchNames = new ArrayList<String>();
+    ArrayAdapter<String> spinnerArrayAdapter;
 
     public ExpenseFragment() {
         // Required empty public constructor
@@ -74,6 +76,24 @@ public class ExpenseFragment extends Fragment {
                 OpenAddExpenseDialog();
             }
         });
+
+        Call<BranchResponse> call = RetrofitClient.getInstance().getApi().getAllBranch();
+        call.enqueue(new Callback<BranchResponse>() {
+            @Override
+            public void onResponse(Call<BranchResponse> call, Response<BranchResponse> response) {
+                branchNames.clear();
+                branchList = response.body().getBranches();
+
+                for (int i = 0; i < branchList.size(); i++){
+                    branchNames.add(branchList.get(i).getBranch_name().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BranchResponse> call, Throwable t) {
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void OpenAddExpenseDialog() {
@@ -81,7 +101,6 @@ public class ExpenseFragment extends Fragment {
         ImageButton imgBtnClose,imgBtnDate;
         Spinner spnBranch,spnSplit;
         EditText edtDate;
-
 
         final Dialog dialog=new Dialog(getActivity());
         dialog.setCancelable(false);
@@ -122,36 +141,10 @@ public class ExpenseFragment extends Fragment {
             }
         });
 
-        Call<BranchResponse> call = RetrofitClient.getInstance().getApi().getAllBranch();
 
-        call.enqueue(new Callback<BranchResponse>() {
-            @Override
-            public void onResponse(Call<BranchResponse> call, Response<BranchResponse> response) {
-                branchList = response.body().getBranches();
-
-                Toast.makeText(getActivity(), branchList.toString(), Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onFailure(Call<BranchResponse> call, Throwable t) {
-
-            }
-        });
-
-
-       /* ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, branchNames);
+        spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, branchNames);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-        spnBranch.setAdapter(spinnerArrayAdapter);*/
-/*
-     ArrayAdapter<Branch> spinnerArrayAdapter = new ArrayAdapter<Branch>(getActivity(), android.R.layout.simple_spinner_item, branchList);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-        spnBranch.setAdapter(spinnerArrayAdapter);*/
-
-    /*  ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                getActivity(), R.array.Branches, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnBranch.setAdapter(adapter);*/
+        spnBranch.setAdapter(spinnerArrayAdapter);
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(
                 getActivity(), R.array.SplitType, android.R.layout.simple_spinner_item);

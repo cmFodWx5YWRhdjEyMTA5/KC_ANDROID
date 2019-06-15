@@ -34,6 +34,7 @@ public class SharedPrefManager {
         editor.putString("mobile",user.getUmobile());
         editor.putString("IMEI1",user.getUimei_no1());
         editor.putString("IMEI2",user.getUimei_no2());
+        editor.putString("profileImg",user.getU_img());
 
         editor.apply();
     }
@@ -51,7 +52,8 @@ public class SharedPrefManager {
                 sharedPreferences.getString("email",null),
                 sharedPreferences.getString("mobile",null),
                 sharedPreferences.getString("IMEI1",null),
-                sharedPreferences.getString("IMEI2",null)
+                sharedPreferences.getString("IMEI2",null),
+                sharedPreferences.getString("profileImg",null)
         );
     }
 

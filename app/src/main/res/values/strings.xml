@@ -14,7 +14,7 @@
     </string-array>
 
     <string-array name="SplitType">
-        <item>Allowance</item>
+        <item>Cash</item>
         <item>Fuel</item>
     </string-array>
 </resources>

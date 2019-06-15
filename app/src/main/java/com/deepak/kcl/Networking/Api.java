@@ -31,6 +31,13 @@ public interface Api {
            @Field("imei2") String imei2
     );
 
+    @FormUrlEncoded
+    @PUT("updateProfile/{id}")
+    Call<LoginResponse> updateProfile(
+            @Path("id") int id,
+            @Field("profileImg") String profileImg
+    );
+
     @GET("getBranches")
     Call<BranchResponse> getAllBranch();
 }

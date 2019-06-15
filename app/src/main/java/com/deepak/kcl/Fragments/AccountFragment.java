@@ -15,7 +15,11 @@ import com.deepak.kcl.Activities.LoginActivity;
 import com.deepak.kcl.Activities.ProfileActivity;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
+import com.deepak.kcl.Utils.Common;
 import com.deepak.kcl.models.User;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +30,7 @@ public class AccountFragment extends Fragment {
     Button btnSignOut;
     TextView txtAcUname,txtAcUemail,txtAcHome,txtAcEditprofile,txtAcTrips,txtAcReports;
     User user;
+    CircleImageView imgProfile;
     public AccountFragment() {
     }
 
@@ -44,6 +49,7 @@ public class AccountFragment extends Fragment {
         txtAcEditprofile = view.findViewById(R.id.txtAcEditProfile);
         txtAcTrips = view.findViewById(R.id.txtAcTrips);
         txtAcReports = view.findViewById(R.id.txtAcReports);
+        imgProfile = view.findViewById(R.id.account_fragment_profile);
 
         btnSignOut = view.findViewById(R.id.btnSignOut);
 
@@ -61,6 +67,11 @@ public class AccountFragment extends Fragment {
         user = SharedPrefManager.getInstance(getActivity()).getUser();
         txtAcUname.setText(user.getUname());
         txtAcUemail.setText(user.getUemail());
+
+        Picasso.with(getContext())
+                .load(Common.Image_url+user.getU_img())
+                .placeholder(R.mipmap.profile_placeholder)
+                .into(imgProfile);
 
         txtAcHome.setOnClickListener(new View.OnClickListener() {
             @Override

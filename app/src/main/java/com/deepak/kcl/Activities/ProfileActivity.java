@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
@@ -29,9 +30,12 @@ import android.widget.Toast;
 import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
+import com.deepak.kcl.Utils.Common;
 import com.deepak.kcl.models.LoginResponse;
 import com.deepak.kcl.models.User;
+import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
@@ -51,6 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
     String nm,mob,email,IMEI1,IMEI2;
     User user;
     ImageView imgUpload;
+    Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +102,11 @@ public class ProfileActivity extends AppCompatActivity {
         edtUpdMobile.setText(user.getUmobile());
         edtIMEI1.setText(user.getUimei_no1());
         edtIMEI2.setText(user.getUimei_no2());
+
+        Picasso.with(this)
+                .load(Common.Image_url+user.getU_img())
+                .placeholder(R.mipmap.profile_placeholder)
+                .into(imgProfile);
 
         btnPhotoUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,7 +194,6 @@ public class ProfileActivity extends AppCompatActivity {
         Log.d("mob",IMEI1);
         Log.d("mob",IMEI2);
 
-
         Call<LoginResponse> call = RetrofitClient.getInstance().getApi().updateUser(user.getUid(),nm,email,mob,IMEI1,IMEI2);
         
         call.enqueue(new Callback<LoginResponse>() {
@@ -238,6 +247,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                uploadImage();
                 dialog.cancel();
             }
         });
@@ -265,36 +275,49 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
+
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
+            try{
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),selectedImage);
+                imgUpload.setImageBitmap(bitmap);
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
-            Bitmap bmp = null;
-            try {
-                bmp = getBitmapFromUri(selectedImage);
-            } catch (IOException e) {
+            }catch (IOException e){
                 e.printStackTrace();
             }
-
-            imgUpload.setImageBitmap(bmp);
         }
     }
 
-    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-        ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        parcelFileDescriptor.close();
-        return image;
-    }
+   private String imageToString()
+   {
+       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+       bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+       byte[] imgByte = byteArrayOutputStream.toByteArray();
+       return Base64.encodeToString(imgByte,Base64.DEFAULT);
+   }
+
+   private void uploadImage()
+   {
+       String profileImage = imageToString();
+       int id = user.getUid();
+
+       Call<LoginResponse> call = RetrofitClient.getInstance().getApi().updateProfile(id,profileImage);
+       call.enqueue(new Callback<LoginResponse>() {
+           @Override
+           public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+
+               Toast.makeText(ProfileActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+           }
+
+           @Override
+           public void onFailure(Call<LoginResponse> call, Throwable t) {
+               Toast.makeText(ProfileActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+           }
+       });
+
+   }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
