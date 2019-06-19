@@ -1,7 +1,10 @@
 package com.deepak.kcl.Networking;
 
 import com.deepak.kcl.models.BranchResponse;
+import com.deepak.kcl.models.ExpenseTypeResponse;
 import com.deepak.kcl.models.LoginResponse;
+import com.deepak.kcl.models.TripExpenseResponse;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -40,4 +43,23 @@ public interface Api {
 
     @GET("getBranches")
     Call<BranchResponse> getAllBranch();
+
+    @GET("getExpenseType")
+    Call<ExpenseTypeResponse> getExpenseType();
+
+    @FormUrlEncoded
+    @POST("createTripExpense")
+    Call<TripExpenseResponse> createTripExpense(
+            @Field("userid") int userid,
+            @Field("tripId") int tripId,
+            @Field("tripExpenseType") String tripExpenseType,
+            @Field("tripExpenseAmount") String tripExpenseAmount,
+            @Field("ExpenseImage") String ExpenseImage,
+            @Field("imageName") String imageName
+    );
+
+    @GET("getTripExpense/{id}")
+    Call<TripExpenseResponse> getTripExpenses(
+            @Path("id") int id
+    );
 }

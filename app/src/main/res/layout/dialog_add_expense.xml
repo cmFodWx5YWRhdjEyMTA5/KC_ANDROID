@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="24dp"
+    android:layout_margin="35dp" >
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/dialog_addexp_edtAmount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Amount"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="@+id/dialog_addexp_spnExpenseType"
+            app:layout_constraintStart_toStartOf="@+id/dialog_addexp_spnExpenseType"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_addexp_spnExpenseType" />
+
+        <Spinner
+            android:id="@+id/dialog_addexp_spnExpenseType"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/spinner_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/dialog_addexp_imgUpload"
+            app:layout_constraintTop_toTopOf="@+id/dialog_addexp_imgUpload" />
+
+        <Button
+            android:id="@+id/dialog_addexp_btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorPrimary"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="SAVE"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/dialog_addexp_edtAmount"
+            app:layout_constraintStart_toStartOf="@+id/dialog_addexp_edtAmount"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_addexp_edtAmount" />
+
+        <ImageButton
+
+            android:id="@+id/dialog_addexp_imgBtnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/dialog_addexp_imgUpload"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/truck" />
+
+        <Button
+            android:id="@+id/dialog_addexp_btnchoose"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimary"
+            android:text="CHOOSE IMAGE"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="@+id/dialog_addexp_imgUpload"
+            app:layout_constraintStart_toStartOf="@+id/dialog_addexp_imgUpload"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_addexp_imgUpload" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

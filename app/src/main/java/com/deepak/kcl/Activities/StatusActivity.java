@@ -4,12 +4,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.deepak.kcl.R;
 
 public class StatusActivity extends AppCompatActivity {
 
     Toolbar toolbar;
+    TextView txtlrno,txtdate,txtstatus;
+    Button btnstatus1,btnstatus2,btnstatus3,btnstatus4,btnstatus5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +33,50 @@ public class StatusActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+
+        txtlrno = findViewById(R.id.status_txt_lrno);
+        txtdate = findViewById(R.id.status_txt_date);
+        txtstatus = findViewById(R.id.status_txt_current_sts);
+        btnstatus1 = findViewById(R.id.status_btn1);
+        btnstatus2 = findViewById(R.id.status_btn2);
+        btnstatus3 = findViewById(R.id.status_btn3);
+        btnstatus4 = findViewById(R.id.status_btn4);
+        btnstatus5 = findViewById(R.id.status_btn5);
+
+        btnstatus1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnstatus2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnstatus3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnstatus4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnstatus5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override

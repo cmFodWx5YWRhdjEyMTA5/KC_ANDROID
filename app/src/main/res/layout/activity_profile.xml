@@ -42,9 +42,9 @@
         android:layout_weight="1"
         android:background="@null"
         android:src="@drawable/ic_camera"
-        app:layout_constraintBottom_toBottomOf="@+id/dialog_upload_imgProfile"
-        app:layout_constraintStart_toStartOf="@+id/dialog_upload_imgProfile"
-        app:layout_constraintTop_toTopOf="@+id/dialog_upload_imgProfile"
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_upload_imgUpload"
+        app:layout_constraintStart_toStartOf="@+id/dialog_upload_imgUpload"
+        app:layout_constraintTop_toTopOf="@+id/dialog_upload_imgUpload"
         app:layout_constraintVertical_bias="1.0" />
 
     <LinearLayout
@@ -60,7 +60,7 @@
     </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/dialog_upload_imgProfile"
+        android:id="@+id/dialog_upload_imgUpload"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"

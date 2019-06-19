@@ -2,13 +2,10 @@ package com.deepak.kcl.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -36,7 +33,6 @@ import com.deepak.kcl.models.User;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
 import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -85,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnUpdate = findViewById(R.id.btn_upd_update);
         btnCancel = findViewById(R.id.btn_upd_cancel);
         btnPhotoUpload = findViewById(R.id.btn_photo_upload);
-        imgProfile = findViewById(R.id.dialog_upload_imgProfile);
+        imgProfile = findViewById(R.id.dialog_upload_imgUpload);
 
         initializeView();
     }
@@ -232,10 +228,10 @@ public class ProfileActivity extends AppCompatActivity {
             params.gravity= Gravity.CENTER_VERTICAL;
         }
 
-        imgBtnClose = dialog.findViewById(R.id.dialog_upload_imgClose);
+        imgBtnClose = dialog.findViewById(R.id.dialog_upload_imgbtnclose);
         btnChoose = dialog.findViewById(R.id.dialog_upload_btnChoose);
         btnUpload = dialog.findViewById(R.id.dialog_upload_btnUpload);
-        imgUpload = dialog.findViewById(R.id.dialog_upload_imgProfile);
+        imgUpload = dialog.findViewById(R.id.dialog_upload_imgUpload);
 
         imgBtnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,10 +260,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void openGallery()
     {
-        Intent i = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-
+        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(i, RESULT_LOAD_IMAGE);
     }
 
@@ -276,13 +269,10 @@ public class ProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
-
             Uri selectedImage = data.getData();
-
             try{
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),selectedImage);
                 imgUpload.setImageBitmap(bitmap);
-
             }catch (IOException e){
                 e.printStackTrace();
             }
@@ -315,9 +305,7 @@ public class ProfileActivity extends AppCompatActivity {
                Toast.makeText(ProfileActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
            }
        });
-
    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

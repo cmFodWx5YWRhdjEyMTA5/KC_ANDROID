@@ -25,9 +25,9 @@
             android:paddingRight="10dp"
             android:text="Choose Image"
             android:textColor="@android:color/white"
-            app:layout_constraintEnd_toEndOf="@+id/dialog_upload_imgProfile"
-            app:layout_constraintStart_toStartOf="@+id/dialog_upload_imgProfile"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_upload_imgProfile" />
+            app:layout_constraintEnd_toEndOf="@+id/dialog_upload_imgUpload"
+            app:layout_constraintStart_toStartOf="@+id/dialog_upload_imgUpload"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_upload_imgUpload" />
 
         <Button
             android:id="@+id/dialog_upload_btnUpload"
@@ -46,7 +46,7 @@
             app:layout_constraintTop_toBottomOf="@+id/dialog_upload_btnChoose" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/dialog_upload_imgProfile"
+            android:id="@+id/dialog_upload_imgUpload"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_marginStart="8dp"
@@ -60,7 +60,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/dialog_upload_imgClose"
+            android:id="@+id/dialog_upload_imgbtnclose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"

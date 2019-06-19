@@ -35,8 +35,6 @@ public class AdvancesActivity extends AppCompatActivity {
         initializeView();
     }
 
-
-
     private void initializeView() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
