@@ -52,7 +52,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
 
     //Picaso
-    implementation 'com.squareup.picasso:picasso:2.4.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     //Dexter Runtime Permission
     implementation 'com.karumi:dexter:4.2.0'
@@ -66,6 +66,4 @@ dependencies {
     //placeholderview
     implementation 'com.mindorks:placeholderview:0.7.1'
 
-    //Picaso
-    implementation 'com.squareup.picasso:picasso:2.4.0'
 }

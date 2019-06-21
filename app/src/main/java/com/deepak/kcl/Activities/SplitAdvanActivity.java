@@ -81,7 +81,7 @@ public class SplitAdvanActivity extends AppCompatActivity {
         btnSave = dialog.findViewById(R.id.dialog_exp_btnSave);
         btnCancel = dialog.findViewById(R.id.dialog_exp_btnCancel);
         spnBranch = dialog.findViewById(R.id.dialog_exp_spnBranch);
-        spnSplit = dialog.findViewById(R.id.dialog_exp_spnSplit);
+        spnSplit = dialog.findViewById(R.id.dialog_exp_spnExpense);
         imgBtnDate = dialog.findViewById(R.id.dialog_exp_imgBtnDate);
         edtDate = dialog.findViewById(R.id.dialog_exp_edtDate);
         txtHeader = dialog.findViewById(R.id.dialog_exp_header);

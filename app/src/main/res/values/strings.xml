@@ -15,6 +15,13 @@
 
     <string-array name="SplitType">
         <item>Cash</item>
+        <item>Trip Expenses</item>
         <item>Fuel</item>
+    </string-array>
+
+    <string-array name="LrNumber">
+        <item>1234</item>
+        <item>5678</item>
+        <item>9785</item>
     </string-array>
 </resources>

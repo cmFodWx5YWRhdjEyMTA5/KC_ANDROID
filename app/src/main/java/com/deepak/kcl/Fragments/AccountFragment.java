@@ -17,6 +17,8 @@ import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
 import com.deepak.kcl.Utils.Common;
 import com.deepak.kcl.models.User;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -70,6 +72,8 @@ public class AccountFragment extends Fragment {
 
         Picasso.with(getContext())
                 .load(Common.Image_url+user.getU_img())
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
                 .placeholder(R.mipmap.profile_placeholder)
                 .into(imgProfile);
 

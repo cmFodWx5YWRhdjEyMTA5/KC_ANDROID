@@ -28,12 +28,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deepak.kcl.Adapter.TripExpenseRecylerView;
 import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
+import com.deepak.kcl.Utils.Common;
+import com.deepak.kcl.Utils.TotalExpense;
 import com.deepak.kcl.models.Branch;
 import com.deepak.kcl.models.ExpenseType;
 import com.deepak.kcl.models.ExpenseTypeResponse;
@@ -52,7 +55,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TripClosureActivity extends AppCompatActivity {
+public class TripClosureActivity extends AppCompatActivity implements TotalExpense {
 
     Toolbar toolbar;
     ImageButton imgBtnAdd,imgBtnLoded,imgBtnUnloded;
@@ -72,6 +75,7 @@ public class TripClosureActivity extends AppCompatActivity {
     User user;
     RecyclerView recyclerView;
     TripExpenseRecylerView adapter;
+    TextView txtTotalExpense,txtEmptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,8 @@ public class TripClosureActivity extends AppCompatActivity {
         imgLoded = findViewById(R.id.imgLoded);
         imgUnLoded = findViewById(R.id.imgUnloded);
         recyclerView = findViewById(R.id.recyclerview_add_exp);
+        txtTotalExpense = findViewById(R.id.txt_total_tripExpense);
+        txtEmptyView = findViewById(R.id.txtMsgEmptyView);
 
         initializeView();
     }
@@ -146,18 +152,26 @@ public class TripClosureActivity extends AppCompatActivity {
 
     private void fillRecyclerView() {
 
-        Call<TripExpenseResponse> call = RetrofitClient.getInstance().getApi().getTripExpenses(1007);
+        Call<TripExpenseResponse> call = RetrofitClient.getInstance().getApi().getTripExpenses(1010);
         call.enqueue(new Callback<TripExpenseResponse>() {
             @Override
             public void onResponse(Call<TripExpenseResponse> call, Response<TripExpenseResponse> response) {
                 tripExpenses = response.body().getTripExpense();
-                adapter = new TripExpenseRecylerView(getBaseContext(),tripExpenses);
-                recyclerView.setAdapter(adapter);
+                if(tripExpenses.size() == 0){
+                    recyclerView.setVisibility(View.GONE);
+                    txtEmptyView.setVisibility(View.VISIBLE);
+                }else{
+                    recyclerView.setVisibility(View.VISIBLE);
+                    txtEmptyView.setVisibility(View.GONE);
+                    adapter = new TripExpenseRecylerView(TripClosureActivity.this,tripExpenses);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override
             public void onFailure(Call<TripExpenseResponse> call, Throwable t) {
-
+                Toast.makeText(TripClosureActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -237,8 +251,15 @@ public class TripClosureActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddTripExpense();
-                dialog.cancel();
+                if(edtExpAmount.getText().toString().trim().isEmpty())
+                {
+                    edtExpAmount.setError("Amount is Required");
+                    edtExpAmount.requestFocus();
+                    return;
+                }else {
+                    AddTripExpense();
+                    dialog.cancel();
+                }
             }
         });
 
@@ -247,7 +268,6 @@ public class TripClosureActivity extends AppCompatActivity {
             public void onClick(View view) {
                 flag1 = 1;
                 openGallery();
-
             }
         });
 
@@ -261,7 +281,7 @@ public class TripClosureActivity extends AppCompatActivity {
         final int random = new Random().nextInt((max - min) + 1) + min;
 
         int id = user.getUid();
-        int tripId = 1007;
+        int tripId = 1010;
         String imgName = tripId+"_"+random;
         String ExpenseType = spnExpenseType.getSelectedItem().toString();
         String ExpenseAmount = edtExpAmount.getText().toString().trim();
@@ -272,11 +292,11 @@ public class TripClosureActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<TripExpenseResponse> call, Response<TripExpenseResponse> response) {
                 Toast.makeText(TripClosureActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                fillRecyclerView();
             }
 
             @Override
             public void onFailure(Call<TripExpenseResponse> call, Throwable t) {
-                Log.d("EXpenseEntry",t.getMessage());
                 Toast.makeText(TripClosureActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -290,4 +310,11 @@ public class TripClosureActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void updateExpenseAmount(String amount) {
+        txtTotalExpense.setText("Rs."+amount+"/-");
+    }
+
+
 }

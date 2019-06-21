@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.deepak.kcl.R;
 import com.deepak.kcl.Utils.Common;
+import com.deepak.kcl.Utils.TotalExpense;
 import com.deepak.kcl.models.TripExpense;
 import com.squareup.picasso.Picasso;
 
@@ -21,6 +23,8 @@ public class TripExpenseRecylerView extends RecyclerView.Adapter<TripExpenseRecy
 
     private Context mContext;
     private List<TripExpense> mTripExpenseList;
+    int pos;
+    private String total_amount;
 
     public TripExpenseRecylerView(Context mContext, List<TripExpense> mTripExpenseList) {
         this.mContext = mContext;
@@ -41,11 +45,27 @@ public class TripExpenseRecylerView extends RecyclerView.Adapter<TripExpenseRecy
 
         Picasso.with(mContext)
                 .load(Common.Trip_Expense_url+tripExpense.getTripexp_img())
-                .placeholder(R.mipmap.profile_placeholder)
+                .placeholder(R.drawable.load)
                 .into(holder.imgExp);
 
         holder.txtExpType.setText(tripExpense.getTripexp_type());
         holder.txtExpAmount.setText(tripExpense.getTripexp_amount());
+        pos = mTripExpenseList.size();
+        total_amount = mTripExpenseList.get(pos-1).getTotalExpense();
+
+        if(position == 0){
+            if(mContext instanceof TotalExpense) {
+                ((TotalExpense) mContext).updateExpenseAmount(total_amount);
+            }
+        }
+        holder.imgBtnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "Hello1", Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
     }
 
     @Override
@@ -64,7 +84,6 @@ public class TripExpenseRecylerView extends RecyclerView.Adapter<TripExpenseRecy
             txtExpType = itemView.findViewById(R.id.trip_exp_type);
             txtExpAmount = itemView.findViewById(R.id.trip_exp_amount);
             imgBtnEdit = itemView.findViewById(R.id.trip_exp_btnedit);
-
         }
     }
 }

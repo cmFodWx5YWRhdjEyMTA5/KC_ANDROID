@@ -7,7 +7,7 @@
     tools:context=".Activities.ListExpenseActivity">
 
     <ImageButton
-        android:id="@+id/imageButton11"
+        android:id="@+id/item_brachExpense_btnEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/divider30" />
 
     <ImageButton
-        android:id="@+id/exp_imgbtn_add"
+        android:id="@+id/Branchexp_imgbtn_Add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -52,7 +52,7 @@
         android:text="Add New Expense"
         android:textColor="@color/colorongoing"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/exp_imgbtn_add"
+        app:layout_constraintEnd_toStartOf="@+id/Branchexp_imgbtn_Add"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <android.support.design.widget.AppBarLayout
@@ -91,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <TextView
-        android:id="@+id/textView70"
+        android:id="@+id/item_brachExpense_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -119,7 +119,7 @@
         app:layout_constraintTop_toBottomOf="@+id/divider30" />
 
     <TextView
-        android:id="@+id/textView71"
+        android:id="@+id/item_brachExpense_ExpenseType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -161,7 +161,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView78" />
 
     <TextView
-        android:id="@+id/textView74"
+        android:id="@+id/item_brachExpense_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -186,7 +186,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView70" />
+        app:layout_constraintTop_toBottomOf="@+id/item_brachExpense_date" />
 
     <TextView
         android:id="@+id/textView77"

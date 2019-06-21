@@ -30,6 +30,8 @@ import com.deepak.kcl.Storage.SharedPrefManager;
 import com.deepak.kcl.Utils.Common;
 import com.deepak.kcl.models.LoginResponse;
 import com.deepak.kcl.models.User;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -101,6 +103,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         Picasso.with(this)
                 .load(Common.Image_url+user.getU_img())
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
                 .placeholder(R.mipmap.profile_placeholder)
                 .into(imgProfile);
 
@@ -245,6 +249,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 uploadImage();
                 dialog.cancel();
+
             }
         });
 
@@ -298,6 +303,8 @@ public class ProfileActivity extends AppCompatActivity {
            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
 
                Toast.makeText(ProfileActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+               finish();
+               startActivity(getIntent());
            }
 
            @Override

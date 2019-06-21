@@ -72,7 +72,7 @@
             android:layout_height="80dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="40dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/truck" />
@@ -88,6 +88,20 @@
             app:layout_constraintEnd_toEndOf="@+id/dialog_addexp_imgUpload"
             app:layout_constraintStart_toStartOf="@+id/dialog_addexp_imgUpload"
             app:layout_constraintTop_toBottomOf="@+id/dialog_addexp_imgUpload" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:text="Add Trip Expense"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/dialog_addexp_spnExpenseType"
+            app:layout_constraintStart_toStartOf="@+id/dialog_addexp_spnExpenseType"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </android.support.constraint.ConstraintLayout>
