@@ -24,4 +24,12 @@
         <item>5678</item>
         <item>9785</item>
     </string-array>
+
+    <string-array name="TripExpType">
+        <item>Cash</item>
+        <item>Fuel</item>
+        <item>Toll Tax</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+    </string-array>
 </resources>

@@ -152,7 +152,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
 
     private void fillRecyclerView() {
 
-        Call<TripExpenseResponse> call = RetrofitClient.getInstance().getApi().getTripExpenses(1010);
+        Call<TripExpenseResponse> call = RetrofitClient.getInstance().getApi().getTripExpenses(1110);
         call.enqueue(new Callback<TripExpenseResponse>() {
             @Override
             public void onResponse(Call<TripExpenseResponse> call, Response<TripExpenseResponse> response) {
@@ -281,7 +281,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
         final int random = new Random().nextInt((max - min) + 1) + min;
 
         int id = user.getUid();
-        int tripId = 1010;
+        int tripId = 1110;
         String imgName = tripId+"_"+random;
         String ExpenseType = spnExpenseType.getSelectedItem().toString();
         String ExpenseAmount = edtExpAmount.getText().toString().trim();

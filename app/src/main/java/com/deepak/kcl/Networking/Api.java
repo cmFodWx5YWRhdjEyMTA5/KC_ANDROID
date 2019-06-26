@@ -69,8 +69,8 @@ public interface Api {
     Call<BranchExpenseResponse> createBranchExpense(
             @Field("userid") int userid,
             @Field("bch_date") String bch_date,
-            @Field("branch_id") int branch_id,
-            @Field("expense_id") int expense_id,
+            @Field("branch_id") String branch_id,
+            @Field("expense_id") String expense_id,
             @Field("lr_number") String lr_number,
             @Field("trip_expense_type") String trip_expense_type,
             @Field("bch_amount") String bch_amount,

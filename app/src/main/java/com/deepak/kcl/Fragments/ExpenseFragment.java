@@ -244,6 +244,11 @@ public class ExpenseFragment extends Fragment {
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnLrNo.setAdapter(adapter2);
 
+        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(
+                getActivity(), R.array.TripExpType, android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnExpType.setAdapter(adapter3);
+
         imgBtnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -272,10 +277,10 @@ public class ExpenseFragment extends Fragment {
 
         int id = user.getUid();
         String expDate = edtDate.getText().toString().trim();
-        int branchId = 1;
-        int expenseId = 1;
+        String branchId = spnBranch.getSelectedItem().toString().trim();
+        String expenseId = spnSplit.getSelectedItem().toString().trim();
         String lrNumber = spnLrNo.getSelectedItem().toString().trim();
-        String tripExpenseType = "Test";
+        String tripExpenseType = spnExpType.getSelectedItem().toString().trim();
         String expAmount = edtAmount.getText().toString().trim();
         String expDesc = edtDesc.getText().toString().trim();
 

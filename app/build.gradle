@@ -21,6 +21,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            def appName = "kcl"
+            outputFileName = appName+".apk"
+        }
+    }
+
 }
 
 dependencies {
