@@ -84,6 +84,13 @@ public interface Api {
     );
 
     @FormUrlEncoded
+    @PUT("DeleteBranchExp/{id}")
+    Call<BranchExpenseResponse> DeleteBranchExp(
+            @Path("id") int id,
+            @Field("uid") String uid
+    );
+
+    @FormUrlEncoded
     @POST("createLoadingDetail")
     Call<LoadingResponse> createLoadingDetail(
             @Field("userid") int userid,

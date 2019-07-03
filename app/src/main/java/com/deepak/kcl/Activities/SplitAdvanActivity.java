@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -19,9 +21,17 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.deepak.kcl.Adapter.AdvanceAdapter;
+import com.deepak.kcl.Adapter.SplitAdvanceAdapter;
 import com.deepak.kcl.R;
+import com.deepak.kcl.models.AdvanceChild;
+import com.deepak.kcl.models.AdvanceHeader;
+import com.deepak.kcl.models.SplitAdvChild;
+import com.deepak.kcl.models.SplitAdvHeader;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class SplitAdvanActivity extends AppCompatActivity {
 
@@ -32,6 +42,12 @@ public class SplitAdvanActivity extends AppCompatActivity {
     int month;
     int dayOfMonth;
     Calendar calendar;
+
+    private RecyclerView splitAdvRecyclerView;
+    private SplitAdvanceAdapter splitAdvanceAdapter;
+    private List<SplitAdvHeader> splitAdvanceHeader;
+    List<SplitAdvChild> splitAdvanceChildList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +57,8 @@ public class SplitAdvanActivity extends AppCompatActivity {
 
     private void initView() {
         toolbar = findViewById(R.id.splitAdvanceToolbar);
-        imgbtnAdd = findViewById(R.id.split_adv_imgBtnAdd);
+        //imgbtnAdd = findViewById(R.id.split_adv_imgBtnAdd);
+        splitAdvRecyclerView = findViewById(R.id.splitAdvRecyclerView);
         initializeView();
     }
 
@@ -51,12 +68,50 @@ public class SplitAdvanActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
 
-        imgbtnAdd.setOnClickListener(new View.OnClickListener() {
+        getsplitadvanceHeader();
+        splitAdvanceAdapter = new SplitAdvanceAdapter(splitAdvanceHeader,this);
+        splitAdvRecyclerView.setLayoutManager(new LinearLayoutManager(SplitAdvanActivity.this));
+        splitAdvRecyclerView.setAdapter(splitAdvanceAdapter);
+
+      /*  imgbtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OpenAddExpenseDialog();
             }
-        });
+        });*/
+    }
+
+    private void getsplitadvanceHeader() {
+        splitAdvanceHeader = new ArrayList<>(5);
+        for(int i = 0; i < 5; i++)
+        {
+            splitAdvanceChildList = new ArrayList<>();
+            if(i==0) {
+                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
+                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
+                splitAdvanceHeader.add(new SplitAdvHeader("IOCL", splitAdvanceChildList));
+            }
+            if(i==1) {
+                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
+                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
+                splitAdvanceHeader.add(new SplitAdvHeader("CASH", splitAdvanceChildList));
+            }
+            if(i==2) {
+                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
+                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
+                splitAdvanceHeader.add(new SplitAdvHeader("BANK", splitAdvanceChildList));
+            }
+            if(i==3) {
+                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
+                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
+                splitAdvanceHeader.add(new SplitAdvHeader("HAPPAY", splitAdvanceChildList));
+            }
+            if(i==5) {
+                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
+                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
+                splitAdvanceHeader.add(new SplitAdvHeader("OTHERS", splitAdvanceChildList));
+            }
+        }
     }
 
     private void OpenAddExpenseDialog() {

@@ -46,35 +46,35 @@ public class StatusActivity extends AppCompatActivity {
         btnstatus1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                txtstatus.setText(btnstatus1.getText().toString().trim());
             }
         });
 
         btnstatus2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                txtstatus.setText(btnstatus2.getText().toString().trim());
             }
         });
 
         btnstatus3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                txtstatus.setText(btnstatus3.getText().toString().trim());
             }
         });
 
         btnstatus4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                txtstatus.setText(btnstatus4.getText().toString().trim());
             }
         });
 
         btnstatus5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                txtstatus.setText(btnstatus5.getText().toString().trim());
             }
         });
     }

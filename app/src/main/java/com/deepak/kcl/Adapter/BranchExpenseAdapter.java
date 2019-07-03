@@ -1,20 +1,36 @@
 package com.deepak.kcl.Adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.deepak.kcl.Activities.ProfileActivity;
+import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
 import com.deepak.kcl.models.BranchExpense;
+import com.deepak.kcl.models.BranchExpenseResponse;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdapter.BranchExpenseViewHolder> {
 
+    BranchExpense branchExpense;
     private Context mContext;
     private List<BranchExpense> mBranchExpenseList;
 
@@ -32,7 +48,7 @@ public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdap
 
     @Override
     public void onBindViewHolder(@NonNull BranchExpenseViewHolder holder, int position) {
-        BranchExpense branchExpense = mBranchExpenseList.get(position);
+        branchExpense = mBranchExpenseList.get(position);
 
         holder.txtDate.setText(branchExpense.getBch_date());
         holder.txtBranch.setText(branchExpense.getBranch_name());
@@ -47,6 +63,26 @@ public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdap
             holder.textTripExpType.setVisibility(View.GONE);
             holder.txtTripExpType.setVisibility(View.GONE);
         }
+
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenDeleteDialog(position);
+            }
+        });
+
+        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void removeItem(int position) {
+        mBranchExpenseList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mBranchExpenseList.size());
     }
 
     @Override
@@ -73,5 +109,55 @@ public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdap
             btnDelete = itemView.findViewById(R.id.item_brachExpense_btnDelete);
 
         }
+    }
+
+    private void OpenDeleteDialog(int pos) {
+        Button btnDelete,btncancel;
+
+        final Dialog dialog=new Dialog(mContext);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_delete);
+        if (dialog.getWindow()!=null)
+        {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+            WindowManager.LayoutParams params=dialog.getWindow().getAttributes();
+            params.gravity= Gravity.CENTER_VERTICAL;
+        }
+
+        btnDelete = dialog.findViewById(R.id.dialog_delete_btndelete);
+        btncancel = dialog.findViewById(R.id.dialog_delete_btnCancel);
+
+
+        btncancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeItem(pos);
+                Call<BranchExpenseResponse> call = RetrofitClient.getInstance().getApi().DeleteBranchExp(Integer.parseInt(branchExpense.getBranch_expense_id()),String.valueOf(branchExpense.getUser_id()));
+                call.enqueue(new Callback<BranchExpenseResponse>() {
+                    @Override
+                    public void onResponse(Call<BranchExpenseResponse> call, Response<BranchExpenseResponse> response) {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<BranchExpenseResponse> call, Throwable t) {
+                        Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
     }
 }
