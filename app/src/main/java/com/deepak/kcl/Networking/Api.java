@@ -3,6 +3,7 @@ package com.deepak.kcl.Networking;
 import com.deepak.kcl.models.BranchExpenseResponse;
 import com.deepak.kcl.models.BranchResponse;
 import com.deepak.kcl.models.ExpenseTypeResponse;
+import com.deepak.kcl.models.LoadingResponse;
 import com.deepak.kcl.models.LoginResponse;
 import com.deepak.kcl.models.TripExpenseResponse;
 
@@ -79,6 +80,22 @@ public interface Api {
 
     @GET("getBranchExpense/{id}")
     Call<BranchExpenseResponse> getBranchExpense(
+            @Path("id") int id
+    );
+
+    @FormUrlEncoded
+    @POST("createLoadingDetail")
+    Call<LoadingResponse> createLoadingDetail(
+            @Field("userid") int userid,
+            @Field("tripId") int tripId,
+            @Field("loadingType") String loadingType,
+            @Field("loadingQuantity") String loadingQuantity,
+            @Field("LoadingImage") String LoadingImage,
+            @Field("imageName") String imageName
+    );
+
+    @GET("getLoadUnload/{id}")
+    Call<LoadingResponse> getLoadUnload(
             @Path("id") int id
     );
 }

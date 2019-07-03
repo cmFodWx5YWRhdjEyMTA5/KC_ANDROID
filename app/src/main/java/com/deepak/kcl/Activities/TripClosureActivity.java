@@ -31,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.deepak.kcl.Adapter.LoadingRecyclerView;
 import com.deepak.kcl.Adapter.TripExpenseRecylerView;
 import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
@@ -40,6 +41,8 @@ import com.deepak.kcl.Utils.TotalExpense;
 import com.deepak.kcl.models.Branch;
 import com.deepak.kcl.models.ExpenseType;
 import com.deepak.kcl.models.ExpenseTypeResponse;
+import com.deepak.kcl.models.LoadingDetails;
+import com.deepak.kcl.models.LoadingResponse;
 import com.deepak.kcl.models.TripExpense;
 import com.deepak.kcl.models.TripExpenseResponse;
 import com.deepak.kcl.models.User;
@@ -58,24 +61,26 @@ import retrofit2.Response;
 public class TripClosureActivity extends AppCompatActivity implements TotalExpense {
 
     Toolbar toolbar;
-    ImageButton imgBtnAdd,imgBtnLoded,imgBtnUnloded;
-    ImageView imgLoded,imgUnLoded;
+    ImageButton imgBtnAdd,imgBtnLoadingAdd;
     private static int RESULT_LOAD_IMAGE = 1;
-    int flag = 0, flag1 = 0;
     Bitmap bitmap;
-    ImageView imgUploadview;
+    ImageView imgUploadview,imgUploadLoading;
     private List<ExpenseType> expenseList;
     private List<TripExpense> tripExpenses;
+    private List<LoadingDetails> loadingDetails;
     private ArrayList<String> expenseNames = new ArrayList<String>();
     ArrayAdapter<String> spinnerArrayAdapter;
-    Button btnChoose,btnSave;
-    ImageButton imgBtnClose;
-    EditText edtExpAmount;
-    Spinner spnExpenseType;
+    Button btnChoose,btnSave,btnLoadChoose,btnLoadSave;
+    ImageButton imgBtnClose,imgBtnLoadingClose;
+    EditText edtExpAmount,edtLoadQty;
+    Spinner spnExpenseType,spnLoadingType;
     User user;
+    int flag = 0;
     RecyclerView recyclerView;
+    RecyclerView recyclerViewLoading;
     TripExpenseRecylerView adapter;
-    TextView txtTotalExpense,txtEmptyView;
+    LoadingRecyclerView loadingAdapter;
+    TextView txtTotalExpense,txtEmptyView,txtLoadingEmptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +92,12 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
     private void initView() {
         toolbar = findViewById(R.id.closureToolbar);
         imgBtnAdd = findViewById(R.id.tripclosure_imgbtnadd);
-        imgBtnLoded = findViewById(R.id.imgbtnloded);
-        imgBtnUnloded = findViewById(R.id.imgbtnunloded);
-        imgLoded = findViewById(R.id.imgLoded);
-        imgUnLoded = findViewById(R.id.imgUnloded);
+        imgBtnLoadingAdd = findViewById(R.id.tripclosure_imgbtnLoading);
         recyclerView = findViewById(R.id.recyclerview_add_exp);
         txtTotalExpense = findViewById(R.id.txt_total_tripExpense);
         txtEmptyView = findViewById(R.id.txtMsgEmptyView);
+        txtLoadingEmptyView = findViewById(R.id.txtLoadingEmptyView);
+        recyclerViewLoading = findViewById(R.id.recyclerView_loading);
 
         initializeView();
     }
@@ -106,26 +110,19 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
 
         user = SharedPrefManager.getInstance(this).getUser();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        imgBtnLoded.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openGallery();
-            }
-        });
-
-        imgBtnUnloded.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flag = 1;
-                openGallery();
-            }
-        });
+        recyclerViewLoading.setLayoutManager(new LinearLayoutManager(this));
 
         imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OpenAddExpense();
+            }
+        });
+
+        imgBtnLoadingAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenLoadingDetails();
             }
         });
 
@@ -147,7 +144,66 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
             }
         });
 
+        fillLoading();
         fillRecyclerView();
+    }
+
+    private void OpenLoadingDetails() {
+        final Dialog dialog=new Dialog(TripClosureActivity.this);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_loading_details);
+
+        if (dialog.getWindow()!=null)
+        {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+            WindowManager.LayoutParams params=dialog.getWindow().getAttributes();
+            params.gravity= Gravity.CENTER_VERTICAL;
+        }
+
+        imgBtnLoadingClose = dialog.findViewById(R.id.dialog_loading_btnclose);
+        btnLoadChoose = dialog.findViewById(R.id.dialog_loading_btnchoose);
+        btnLoadSave = dialog.findViewById(R.id.dialog_loading_btnSave);
+        edtLoadQty = dialog.findViewById(R.id.dialog_loading_edtQty);
+        imgUploadLoading = dialog.findViewById(R.id.dialog_loading_imgview);
+        spnLoadingType = dialog.findViewById(R.id.dialog_loading_spnchoose);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.LoadingType, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnLoadingType.setAdapter(adapter);
+
+
+        imgBtnLoadingClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+        btnLoadChoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flag = 1;
+                openGallery();
+            }
+        });
+
+        btnLoadSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(edtLoadQty.getText().toString().trim().isEmpty())
+                {
+                    edtLoadQty.setError("Quantity is Required");
+                    edtLoadQty.requestFocus();
+                    return;
+                }else {
+                    AddLoadingDetail();
+                    dialog.cancel();
+                }
+            }
+        });
+        dialog.show();
     }
 
     private void fillRecyclerView() {
@@ -177,6 +233,35 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
 
     }
 
+    private void fillLoading() {
+
+        Call<LoadingResponse> call = RetrofitClient.getInstance().getApi().getLoadUnload(1110);
+        call.enqueue(new Callback<LoadingResponse>() {
+            @Override
+            public void onResponse(Call<LoadingResponse> call, Response<LoadingResponse> response) {
+
+                loadingDetails = response.body().getLoad_unload();
+                if(loadingDetails.size() == 0){
+                    recyclerViewLoading.setVisibility(View.INVISIBLE);
+                    txtLoadingEmptyView.setVisibility(View.VISIBLE);
+                }else{
+                    Toast.makeText(TripClosureActivity.this, "Hello", Toast.LENGTH_SHORT).show();
+                    recyclerViewLoading.setVisibility(View.VISIBLE);
+                    txtLoadingEmptyView.setVisibility(View.GONE);
+                    loadingAdapter = new LoadingRecyclerView(TripClosureActivity.this,loadingDetails);
+                    recyclerViewLoading.setAdapter(loadingAdapter);
+                    loadingAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoadingResponse> call, Throwable t) {
+                Toast.makeText(TripClosureActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
     private void openGallery()
     {
         Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -191,17 +276,16 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
             Uri selectedImage = data.getData();
             try{
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),selectedImage);
-                if(flag1 == 0) {
-                    if (flag == 1) {
-                        imgUnLoded.setImageBitmap(bitmap);
-                        flag = 0;
-                    } else {
-                        imgLoded.setImageBitmap(bitmap);
-                    }
-                }else{
+                if(flag == 0)
+                {
                     imgUploadview.setImageBitmap(bitmap);
-                    flag1=0;
+                }else
+                {
+                    imgUploadLoading.setImageBitmap(bitmap);
+                    flag = 0;
                 }
+
+
             }catch (IOException e){
                 e.printStackTrace();
             }
@@ -266,7 +350,6 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                flag1 = 1;
                 openGallery();
             }
         });
@@ -303,6 +386,35 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
 
     }
 
+    private void AddLoadingDetail() {
+
+        final int min = 1500;
+        final int max = 9000;
+        final int random = new Random().nextInt((max - min) + 1) + min;
+
+        int id = user.getUid();
+        int tripId = 1110;
+        String LoadingType = spnLoadingType.getSelectedItem().toString();
+        String imgName = tripId+"_"+LoadingType+"_"+random;
+        String LoadingQuantity = edtLoadQty.getText().toString().trim();
+        String LoadingImage = imageToString();
+
+        Call<LoadingResponse> call = RetrofitClient.getInstance().getApi().createLoadingDetail(id,tripId,LoadingType,LoadingQuantity,LoadingImage,imgName);
+        call.enqueue(new Callback<LoadingResponse>() {
+            @Override
+            public void onResponse(Call<LoadingResponse> call, Response<LoadingResponse> response) {
+                Toast.makeText(TripClosureActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                fillLoading();
+            }
+
+            @Override
+            public void onFailure(Call<LoadingResponse> call, Throwable t) {
+                Toast.makeText(TripClosureActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -315,6 +427,4 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
     public void updateExpenseAmount(String amount) {
         txtTotalExpense.setText("Rs."+amount+"/-");
     }
-
-
 }

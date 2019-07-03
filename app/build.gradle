@@ -73,4 +73,8 @@ dependencies {
     //placeholderview
     implementation 'com.mindorks:placeholderview:0.7.1'
 
+    implementation 'com.github.MikeOrtiz:TouchImageView:1.4.0'
+
+    implementation 'com.github.chathuralakmal:AndroidImagePopup:1.2.1'
+
 }

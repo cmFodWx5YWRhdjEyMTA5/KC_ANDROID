@@ -1,6 +1,7 @@
 package com.deepak.kcl.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Utils.Common;
 import com.deepak.kcl.Utils.TotalExpense;
@@ -43,6 +45,14 @@ public class TripExpenseRecylerView extends RecyclerView.Adapter<TripExpenseRecy
     public void onBindViewHolder(@NonNull TripExpenseViewHolder holder, int position) {
         TripExpense tripExpense = mTripExpenseList.get(position);
 
+        final ImagePopup imagePopup = new ImagePopup(mContext);
+        imagePopup.setBackgroundColor(Color.BLACK);
+        imagePopup.setFullScreen(true);
+        //imagePopup.setHideCloseIcon(true);  // Optional
+        imagePopup.setImageOnClickClose(true);
+
+        imagePopup.initiatePopupWithPicasso(Common.Trip_Expense_url+tripExpense.getTripexp_img());
+
         Picasso.with(mContext)
                 .load(Common.Trip_Expense_url+tripExpense.getTripexp_img())
                 .placeholder(R.drawable.load)
@@ -64,6 +74,13 @@ public class TripExpenseRecylerView extends RecyclerView.Adapter<TripExpenseRecy
                 Toast.makeText(mContext, "Hello1", Toast.LENGTH_SHORT).show();
 
 
+            }
+        });
+
+        holder.imgExp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagePopup.viewPopup();
             }
         });
     }

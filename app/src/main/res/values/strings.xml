@@ -32,4 +32,9 @@
         <item>Lunch</item>
         <item>Dinner</item>
     </string-array>
+
+    <string-array name="LoadingType">
+        <item>Loading</item>
+        <item>UnLoading</item>
+    </string-array>
 </resources>
