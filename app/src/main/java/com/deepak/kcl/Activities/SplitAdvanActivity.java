@@ -106,7 +106,7 @@ public class SplitAdvanActivity extends AppCompatActivity {
                 splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
                 splitAdvanceHeader.add(new SplitAdvHeader("HAPPAY", splitAdvanceChildList));
             }
-            if(i==5) {
+            if(i==4) {
                 splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
                 splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
                 splitAdvanceHeader.add(new SplitAdvHeader("OTHERS", splitAdvanceChildList));

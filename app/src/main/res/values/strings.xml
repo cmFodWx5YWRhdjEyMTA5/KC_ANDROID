@@ -26,11 +26,11 @@
     </string-array>
 
     <string-array name="TripExpType">
-        <item>Cash</item>
-        <item>Fuel</item>
-        <item>Toll Tax</item>
-        <item>Lunch</item>
-        <item>Dinner</item>
+        <item>IOCL</item>
+        <item>CASH</item>
+        <item>BANK</item>
+        <item>HAPPAY</item>
+        <item>OTHERS</item>
     </string-array>
 
     <string-array name="LoadingType">

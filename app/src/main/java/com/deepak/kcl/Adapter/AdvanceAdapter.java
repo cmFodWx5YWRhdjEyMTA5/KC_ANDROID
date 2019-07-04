@@ -43,6 +43,7 @@ public class AdvanceAdapter extends ExpandableRecyclerViewAdapter<AdvHeaderViewH
 
         holder.setAdvDate(advanceChild.getDate());
         holder.setAdvAmount(advanceChild.getAmount());
+        holder.setAdvBranch(advanceChild.getBranch());
         holder.setAdvDesc(advanceChild.getDesc());
     }
 

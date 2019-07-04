@@ -9,11 +9,13 @@ public class AdvanceChild {
 
     private String date;
     private String amount;
+    private String branch;
     private String desc;
 
-    public AdvanceChild(String date, String amount, String desc) {
+    public AdvanceChild(String date, String amount, String branch, String desc) {
         this.date = date;
         this.amount = amount;
+        this.branch = branch;
         this.desc = desc;
     }
 
@@ -31,6 +33,14 @@ public class AdvanceChild {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
     }
 
     public String getDesc() {

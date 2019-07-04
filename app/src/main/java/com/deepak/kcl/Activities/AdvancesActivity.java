@@ -52,24 +52,24 @@ public class AdvancesActivity extends AppCompatActivity {
         {
             advanceChildList = new ArrayList<>();
             if(i==0) {
-                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Fuel Charge Day1"));
-                advanceChildList.add(new AdvanceChild("04 June'19", "Rs.10000", "Fuel Charge Day2"));
+                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Mumbbai HO","Fuel Charge Day1"));
+                advanceChildList.add(new AdvanceChild("04 June'19", "Rs.10000", "HO", "Fuel Charge Day2"));
                 advanceHeader.add(new AdvanceHeader("IOCL", advanceChildList));
             }
             if(i==1) {
-                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Fuel Charge Day1"));
+                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Jaipur","Fuel Charge Day1"));
                 advanceHeader.add(new AdvanceHeader("CASH", advanceChildList));
             }
             if(i==2) {
-                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Fuel Charge Day1"));
+                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Nagpur","Fuel Charge Day1"));
                 advanceHeader.add(new AdvanceHeader("BANK", advanceChildList));
             }
             if(i==3) {
-                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Fuel Charge Day1"));
+                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Banglore","Fuel Charge Day1"));
                 advanceHeader.add(new AdvanceHeader("HAPPAY", advanceChildList));
             }
-            if(i==5) {
-                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Fuel Charge Day1"));
+            if(i==4) {
+
                 advanceHeader.add(new AdvanceHeader("OTHERS", advanceChildList));
             }
         }
