@@ -77,4 +77,10 @@ dependencies {
 
     implementation 'com.github.chathuralakmal:AndroidImagePopup:1.2.1'
 
+    //For Camera
+    implementation 'com.karumi:dexter:5.0.0'
+
+    //SpinKit
+    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
+
 }

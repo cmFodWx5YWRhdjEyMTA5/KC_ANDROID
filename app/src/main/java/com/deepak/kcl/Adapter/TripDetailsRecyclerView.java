@@ -88,7 +88,7 @@ public class TripDetailsRecyclerView extends RecyclerView.Adapter<TripDetailsRec
                         intent.putExtra("detailsname", mTripDetails.get(pos).getDetail_name());
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
-                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getDetail_name(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getDetail_name(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

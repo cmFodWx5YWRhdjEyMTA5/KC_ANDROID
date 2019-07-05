@@ -51,8 +51,8 @@ public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdap
         branchExpense = mBranchExpenseList.get(position);
 
         holder.txtDate.setText(branchExpense.getBch_date());
-        holder.txtBranch.setText(branchExpense.getBranch_name());
-        holder.txtExpType.setText(branchExpense.getExpense_type());
+        holder.txtBranch.setText(branchExpense.getBranch_id());
+        holder.txtExpType.setText(branchExpense.getExpense_id());
         holder.txtLrNumber.setText(branchExpense.getLr_number());
         holder.txtTripExpType.setText(branchExpense.getTrip_expense_type());
         holder.txtAmount.setText("Rs."+branchExpense.getBch_amount()+"/-");

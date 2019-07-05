@@ -36,6 +36,7 @@ import com.deepak.kcl.models.BranchExpenseResponse;
 import com.deepak.kcl.models.BranchResponse;
 import com.deepak.kcl.models.TripExpense;
 import com.deepak.kcl.models.User;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,6 +71,7 @@ public class ExpenseFragment extends Fragment {
     Spinner spnBranch,spnSplit,spnLrNo,spnExpType;
     EditText edtDate,edtAmount,edtDesc;
     TextView txtLrNo,txtExpType;
+    SpinKitView progressBar;
 
     public ExpenseFragment() {
         // Required empty public constructor
@@ -88,6 +90,7 @@ public class ExpenseFragment extends Fragment {
         imgBtnAdd = view.findViewById(R.id.Branchexp_imgbtn_Add);
         recyclerBranchExp = view.findViewById(R.id.recyclerview_branchExpense);
         txtEmptyView = view.findViewById(R.id.txtBrachExpEmptyView);
+        progressBar = view.findViewById(R.id.spin_kit_expense);
         initializeView();
     }
 
@@ -128,6 +131,7 @@ public class ExpenseFragment extends Fragment {
 
     private void FillRecyclerView() {
 
+        progressBar.setVisibility(View.VISIBLE);
         Call<BranchExpenseResponse> call = RetrofitClient.getInstance().getApi().getBranchExpense(user.getUid());
         call.enqueue(new Callback<BranchExpenseResponse>() {
             @Override
@@ -143,6 +147,7 @@ public class ExpenseFragment extends Fragment {
                     recyclerBranchExp.setAdapter(branchExpenseAdapter);
                     branchExpenseAdapter.notifyDataSetChanged();
                 }
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
