@@ -132,7 +132,7 @@ public class ExpenseFragment extends Fragment {
     private void FillRecyclerView() {
 
         progressBar.setVisibility(View.VISIBLE);
-        Call<BranchExpenseResponse> call = RetrofitClient.getInstance().getApi().getBranchExpense(user.getUid());
+        Call<BranchExpenseResponse> call = RetrofitClient.getInstance().getApi().getBranchExpense(user.getUser_id());
         call.enqueue(new Callback<BranchExpenseResponse>() {
             @Override
             public void onResponse(Call<BranchExpenseResponse> call, Response<BranchExpenseResponse> response) {
@@ -280,7 +280,7 @@ public class ExpenseFragment extends Fragment {
 
     private void AddBranchExpense() {
 
-        int id = user.getUid();
+        int id = user.getUser_id();
         String expDate = edtDate.getText().toString().trim();
         String branchId = spnBranch.getSelectedItem().toString().trim();
         String expenseId = spnSplit.getSelectedItem().toString().trim();

@@ -2,6 +2,7 @@ package com.deepak.kcl.Networking;
 
 import com.deepak.kcl.models.BranchExpenseResponse;
 import com.deepak.kcl.models.BranchResponse;
+import com.deepak.kcl.models.BranchTripsResponse;
 import com.deepak.kcl.models.ExpenseTypeResponse;
 import com.deepak.kcl.models.LoadingResponse;
 import com.deepak.kcl.models.LoginResponse;
@@ -54,7 +55,7 @@ public interface Api {
     Call<TripExpenseResponse> createTripExpense(
             @Field("userid") int userid,
             @Field("tripId") int tripId,
-            @Field("tripExpenseType") String tripExpenseType,
+            @Field("tripExpenseType") int tripExpenseType,
             @Field("tripExpenseAmount") String tripExpenseAmount,
             @Field("ExpenseImage") String ExpenseImage,
             @Field("imageName") String imageName
@@ -103,6 +104,11 @@ public interface Api {
 
     @GET("getLoadUnload/{id}")
     Call<LoadingResponse> getLoadUnload(
+            @Path("id") int id
+    );
+
+    @GET("getTripByBranch/{id}")
+    Call<BranchTripsResponse> getTripByBranch(
             @Path("id") int id
     );
 }

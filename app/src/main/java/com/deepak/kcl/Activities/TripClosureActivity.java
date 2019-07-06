@@ -27,6 +27,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -99,6 +100,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
     private static final String IMAGE_DIRECTORY = "/KCL_IMAGE";
     private int GALLERY = 1, CAMERA = 2;
     SpinKitView progressBar1;
+    int a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -431,6 +433,18 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
             }
         });
 
+        spnExpenseType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                a = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -459,14 +473,15 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
 
     private void AddTripExpense() {
 
+
         final int min = 2000;
         final int max = 8000;
         final int random = new Random().nextInt((max - min) + 1) + min;
 
-        int id = user.getUid();
+        int id = user.getUser_id();
         int tripId = 1110;
         String imgName = tripId+"_"+random;
-        String ExpenseType = spnExpenseType.getSelectedItem().toString();
+        int ExpenseType = a+1;
         String ExpenseAmount = edtExpAmount.getText().toString().trim();
         String ExpenseImage = imageToString();
         if(ExpenseImage == "NO_IMAGE")
@@ -497,7 +512,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
         final int max = 9000;
         final int random = new Random().nextInt((max - min) + 1) + min;
 
-        int id = user.getUid();
+        int id = user.getUser_id();
         int tripId = 1110;
         String LoadingType = spnLoadingType.getSelectedItem().toString();
         String imgName = tripId+"_"+LoadingType+"_"+random;

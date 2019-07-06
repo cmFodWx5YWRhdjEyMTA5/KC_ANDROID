@@ -28,12 +28,14 @@ public class SharedPrefManager {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt("id", user.getUid());
-        editor.putString("name",user.getUname());
-        editor.putString("email",user.getUemail());
-        editor.putString("mobile",user.getUmobile());
-        editor.putString("IMEI1",user.getUimei_no1());
-        editor.putString("IMEI2",user.getUimei_no2());
+        editor.putInt("id", user.getUser_id());
+        editor.putString("name",user.getFull_name());
+        editor.putString("email",user.getEmail());
+        editor.putString("mobile",user.getMobile());
+        editor.putInt("branch_id",user.getBranch_id());
+        editor.putString("branch_name",user.getBranch_name());
+        editor.putString("IMEI1",user.getIMEI1());
+        editor.putString("IMEI2",user.getIMEI2());
         editor.putString("profileImg",user.getU_img());
 
         editor.apply();
@@ -51,6 +53,8 @@ public class SharedPrefManager {
                 sharedPreferences.getString("name",null),
                 sharedPreferences.getString("email",null),
                 sharedPreferences.getString("mobile",null),
+                sharedPreferences.getInt("branch_id",-1),
+                sharedPreferences.getString("branch_name",null),
                 sharedPreferences.getString("IMEI1",null),
                 sharedPreferences.getString("IMEI2",null),
                 sharedPreferences.getString("profileImg",null)

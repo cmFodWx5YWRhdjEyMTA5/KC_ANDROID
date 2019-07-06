@@ -67,8 +67,8 @@ public class AccountFragment extends Fragment {
     private void initializeView() {
 
         user = SharedPrefManager.getInstance(getActivity()).getUser();
-        txtAcUname.setText(user.getUname());
-        txtAcUemail.setText(user.getUemail());
+        txtAcUname.setText(user.getFull_name());
+        txtAcUemail.setText(user.getEmail());
 
         Picasso.with(getContext())
                 .load(Common.Image_url+user.getU_img())

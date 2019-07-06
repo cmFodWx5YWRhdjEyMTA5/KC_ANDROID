@@ -57,13 +57,13 @@ public class CompletedFragment extends Fragment {
     }
 
     private void loadJSON() {
-        List<TripList> mtTripList = new ArrayList<>();
+       /* List<TripList> mtTripList = new ArrayList<>();
         mtTripList.add(new TripList("18 May'19","19 May'19","ABCD Travels","123456","MH 05 GJ 4563","A123","Completed"));
         mtTripList.add(new TripList("19 May'19","19 May'19","XYZ Travels","123","MH 05 GJ 4445","A124","Completed"));
         mtTripList.add(new TripList("20 May'19","20 May'19","ABC Travels","136","MH 05 GJ 5563","A125","Completed"));
         mtTripList.add(new TripList("20 May'19","21 May'19","YOYO Travels","1256","MH 05 GJ 8563","A126","Completed"));
         upComingRecyclerView.setAdapter(new TripListAdapter(getActivity().getApplicationContext(), mtTripList));
-        upComingRecyclerView.smoothScrollToPosition(0);
+        upComingRecyclerView.smoothScrollToPosition(0);*/
     }
 
 }

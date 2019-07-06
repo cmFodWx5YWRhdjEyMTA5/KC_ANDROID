@@ -114,11 +114,11 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
 
         user = SharedPrefManager.getInstance(this).getUser();
-        edtUpdName.setText(user.getUname());
-        edtUpdEmail.setText(user.getUemail());
-        edtUpdMobile.setText(user.getUmobile());
-        edtIMEI1.setText(user.getUimei_no1());
-        edtIMEI2.setText(user.getUimei_no2());
+        edtUpdName.setText(user.getFull_name());
+        edtUpdEmail.setText(user.getEmail());
+        edtUpdMobile.setText(user.getMobile());
+        edtIMEI1.setText(user.getIMEI1());
+        edtIMEI2.setText(user.getIMEI2());
 
         Picasso.with(this)
                 .load(Common.Image_url+user.getU_img())
@@ -206,14 +206,14 @@ public class ProfileActivity extends AppCompatActivity {
             edtIMEI2.requestFocus();
             return;
         }
-        Log.d("mob",String.valueOf(user.getUid()));
+        Log.d("mob",String.valueOf(user.getUser_id()));
         Log.d("mob",nm);
         Log.d("mob",email);
         Log.d("mob",mob);
         Log.d("mob",IMEI1);
         Log.d("mob",IMEI2);
 
-        Call<LoginResponse> call = RetrofitClient.getInstance().getApi().updateUser(user.getUid(),nm,email,mob,IMEI1,IMEI2);
+        Call<LoginResponse> call = RetrofitClient.getInstance().getApi().updateUser(user.getUser_id(),nm,email,mob,IMEI1,IMEI2);
         
         call.enqueue(new Callback<LoginResponse>() {
             @Override
@@ -388,7 +388,7 @@ public class ProfileActivity extends AppCompatActivity {
    private void uploadImage()
    {
        String profileImage = imageToString();
-       int id = user.getUid();
+       int id = user.getUser_id();
 
        Call<LoginResponse> call = RetrofitClient.getInstance().getApi().updateProfile(id,profileImage);
        call.enqueue(new Callback<LoginResponse>() {

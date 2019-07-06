@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.deepak.kcl.Activities.TripDetailsActivity;
 import com.deepak.kcl.R;
+import com.deepak.kcl.models.BranchTrips;
 import com.deepak.kcl.models.TripList;
 import java.util.List;
 
@@ -18,9 +19,9 @@ import java.util.List;
 public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripListViewHolder> {
 
     private Context mContext;
-    private List<TripList> mTripList;
+    private List<BranchTrips> mTripList;
 
-    public TripListAdapter(Context mContext, List<TripList> mTripList) {
+    public TripListAdapter(Context mContext, List<BranchTrips> mTripList) {
         this.mContext = mContext;
         this.mTripList = mTripList;
     }
@@ -35,14 +36,15 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripLi
     @Override
     public void onBindViewHolder(@NonNull TripListViewHolder holder, int position) {
 
-        holder.txtStartDate.setText(mTripList.get(position).getStartDate());
-        holder.txtEndDate.setText(mTripList.get(position).getEndDate());
-        holder.txtClientName.setText(mTripList.get(position).getClientName());
-        holder.txtRouteNumber.setText(mTripList.get(position).getRouteNumber());
-        holder.txtVehicleNumber.setText(mTripList.get(position).getVehicleNumber());
-        holder.txtLrNumber.setText(mTripList.get(position).getLrNumber());
-        holder.txtTripStatus.setText(mTripList.get(position).getTripStatus());
-        String status = mTripList.get(position).getTripStatus();
+        holder.txtStartDate.setText(mTripList.get(position).getS_date());
+        holder.txtEndDate.setText(mTripList.get(position).getE_date());
+        holder.txtClientName.setText(mTripList.get(position).getClient_name());
+        //holder.txtRouteNumber.setText(mTripList.get(position).get);
+        holder.txtVehicleNumber.setText(mTripList.get(position).getVehicle_no());
+        holder.txtLrNumber.setText(mTripList.get(position).getLR());
+        holder.txtTripStatus.setText("OnGoing");
+        //String status = mTripList.get(position).getTripStatus();
+        String status = "OnGoing";
 
         if(status.equals("UpComing")) {
             //holder.txtTripStatus.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
@@ -76,12 +78,12 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripLi
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION){
-                        TripList clickedDataItem = mTripList.get(pos);
+                        BranchTrips clickedDataItem = mTripList.get(pos);
                         Intent intent = new Intent(mContext, TripDetailsActivity.class);
-                        intent.putExtra("clientname", mTripList.get(pos).getClientName());
+                        intent.putExtra("clientname", mTripList.get(pos).getLR());
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
-                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getClientName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getLR(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
