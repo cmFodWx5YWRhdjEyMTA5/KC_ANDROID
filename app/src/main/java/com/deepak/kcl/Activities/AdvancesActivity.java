@@ -6,11 +6,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.deepak.kcl.Adapter.AdvanceAdapter;
 import com.deepak.kcl.R;
+import com.deepak.kcl.Storage.SharedPrefManager;
 import com.deepak.kcl.models.AdvanceChild;
 import com.deepak.kcl.models.AdvanceHeader;
+import com.deepak.kcl.models.BranchTrips;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,8 @@ public class AdvancesActivity extends AppCompatActivity {
     private AdvanceAdapter advanceAdapter;
     private List<AdvanceHeader> advanceHeader;
     List<AdvanceChild> advanceChildList;
+    TextView txtlrnumber;
+    BranchTrips branchTrips;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +37,7 @@ public class AdvancesActivity extends AppCompatActivity {
     private void initView() {
         toolbar = findViewById(R.id.advanceToolbar);
         advRecyclerView = findViewById(R.id.Adv_recyclerview);
+        txtlrnumber = findViewById(R.id.advance_txt_lrno);
         initializeView();
     }
 
@@ -40,6 +46,10 @@ public class AdvancesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+
+        branchTrips = SharedPrefManager.getInstance(this).getBranchTrips();
+        txtlrnumber.setText(branchTrips.getLR());
+
         getadvanceHeader();
         advanceAdapter = new AdvanceAdapter(advanceHeader,this);
         advRecyclerView.setLayoutManager(new LinearLayoutManager(AdvancesActivity.this));

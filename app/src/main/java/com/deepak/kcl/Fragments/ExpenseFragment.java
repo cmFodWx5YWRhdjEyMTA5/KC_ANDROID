@@ -68,7 +68,8 @@ public class ExpenseFragment extends Fragment {
     private List<BranchExpense> branchExpenses;
     Button btnSave,btnCancel;
     ImageButton imgBtnClose,imgBtnDate;
-    Spinner spnBranch,spnSplit,spnLrNo,spnExpType;
+    Spinner spnSplit,spnLrNo,spnExpType;
+    EditText spnBranch;
     EditText edtDate,edtAmount,edtDesc;
     TextView txtLrNo,txtExpType;
     SpinKitView progressBar;
@@ -159,7 +160,6 @@ public class ExpenseFragment extends Fragment {
 
     private void OpenAddExpenseDialog() {
 
-
         final Dialog dialog=new Dialog(getActivity());
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.dialog_expense);
@@ -205,15 +205,16 @@ public class ExpenseFragment extends Fragment {
                                 edtDate.setText(day + "/" + (month + 1) + "/" + year);
                             }
                         }, year, month, dayOfMonth);
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
                 datePickerDialog.show();
             }
         });
 
 
-        spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, branchNames);
+        /*spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, branchNames);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-        spnBranch.setAdapter(spinnerArrayAdapter);
+        spnBranch.setAdapter(spinnerArrayAdapter);*/
+        spnBranch.setText(user.getBranch_name());
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(
                 getActivity(), R.array.SplitType, android.R.layout.simple_spinner_item);
@@ -282,7 +283,7 @@ public class ExpenseFragment extends Fragment {
 
         int id = user.getUser_id();
         String expDate = edtDate.getText().toString().trim();
-        String branchId = spnBranch.getSelectedItem().toString().trim();
+        String branchId = String.valueOf(user.getBranch_id());
         String expenseId = spnSplit.getSelectedItem().toString().trim();
         String lrNumber = spnLrNo.getSelectedItem().toString().trim();
         String tripExpenseType = spnExpType.getSelectedItem().toString().trim();

@@ -34,7 +34,7 @@ public class StatusActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
 
-        txtlrno = findViewById(R.id.status_txt_lrno);
+        txtlrno = findViewById(R.id.advance_txt_lrno);
         txtdate = findViewById(R.id.status_txt_date);
         txtstatus = findViewById(R.id.status_txt_current_sts);
         btnstatus1 = findViewById(R.id.status_btn1);
