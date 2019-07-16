@@ -103,6 +103,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
     SpinKitView progressBar1;
     int a;
     BranchTrips branchTrips;
+    TextView txtlrnumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +114,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
 
     private void initView() {
         toolbar = findViewById(R.id.closureToolbar);
+        txtlrnumber=findViewById(R.id.trip_closure_txtlrno);
         imgBtnAdd = findViewById(R.id.tripclosure_imgbtnadd);
         imgBtnLoadingAdd = findViewById(R.id.tripclosure_imgbtnLoading);
         recyclerView = findViewById(R.id.recyclerview_add_exp);
@@ -134,6 +136,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
         branchTrips = SharedPrefManager.getInstance(this).getBranchTrips();
         user = SharedPrefManager.getInstance(this).getUser();
 
+        txtlrnumber.setText(branchTrips.getLR());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewLoading.setLayoutManager(new LinearLayoutManager(this));
 

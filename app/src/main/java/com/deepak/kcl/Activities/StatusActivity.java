@@ -9,12 +9,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.deepak.kcl.R;
+import com.deepak.kcl.Storage.SharedPrefManager;
+import com.deepak.kcl.models.BranchTrips;
 
 public class StatusActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     TextView txtlrno,txtdate,txtstatus;
     Button btnstatus1,btnstatus2,btnstatus3,btnstatus4,btnstatus5;
+    TextView txtlrnumber;
+    BranchTrips branchTrips;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,7 @@ public class StatusActivity extends AppCompatActivity {
 
     private void initView() {
         toolbar = findViewById(R.id.tripStatusToolbar);
+        txtlrnumber = findViewById(R.id.status_txt_lrno);
         initializeView();
     }
 
@@ -33,6 +38,9 @@ public class StatusActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+
+        branchTrips = SharedPrefManager.getInstance(this).getBranchTrips();
+        txtlrnumber.setText(branchTrips.getLR());
 
         txtlrno = findViewById(R.id.advance_txt_lrno);
         txtdate = findViewById(R.id.status_txt_date);

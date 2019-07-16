@@ -34,6 +34,8 @@ import com.deepak.kcl.models.Branch;
 import com.deepak.kcl.models.BranchExpense;
 import com.deepak.kcl.models.BranchExpenseResponse;
 import com.deepak.kcl.models.BranchResponse;
+import com.deepak.kcl.models.ExpenseType;
+import com.deepak.kcl.models.ExpenseTypeResponse;
 import com.deepak.kcl.models.TripExpense;
 import com.deepak.kcl.models.User;
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -59,7 +61,8 @@ public class ExpenseFragment extends Fragment {
     int dayOfMonth;
     Calendar calendar;
     private List<Branch> branchList;
-    private ArrayList<String> branchNames = new ArrayList<String>();
+    private ArrayList<String> expenseNames = new ArrayList<String>();
+    private List<ExpenseType> expenseList;
     ArrayAdapter<String> spinnerArrayAdapter;
     RecyclerView recyclerBranchExp;
     BranchExpenseAdapter branchExpenseAdapter;
@@ -73,6 +76,9 @@ public class ExpenseFragment extends Fragment {
     EditText edtDate,edtAmount,edtDesc;
     TextView txtLrNo,txtExpType;
     SpinKitView progressBar;
+    int flag=0;
+    String lrNumber;
+    String tripExpenseType;
 
     public ExpenseFragment() {
         // Required empty public constructor
@@ -109,20 +115,21 @@ public class ExpenseFragment extends Fragment {
         });
 
 
-        Call<BranchResponse> call = RetrofitClient.getInstance().getApi().getAllBranch();
-        call.enqueue(new Callback<BranchResponse>() {
+        Call<ExpenseTypeResponse> call = RetrofitClient.getInstance().getApi().getExpenseType();
+        call.enqueue(new Callback<ExpenseTypeResponse>() {
             @Override
-            public void onResponse(Call<BranchResponse> call, Response<BranchResponse> response) {
-                branchNames.clear();
-                branchList = response.body().getBranches();
+            public void onResponse(Call<ExpenseTypeResponse> call, Response<ExpenseTypeResponse> response) {
+                expenseNames.clear();
+                expenseList = response.body().getExpenses();
 
-                for (int i = 0; i < branchList.size(); i++){
-                    branchNames.add(branchList.get(i).getBranch_name().toString());
+                for (int i = 0; i < expenseList.size(); i++){
+                    expenseNames.add(expenseList.get(i).getExpense_type().toString());
                 }
+                expenseNames.add("Trip Expenses");
             }
 
             @Override
-            public void onFailure(Call<BranchResponse> call, Throwable t) {
+            public void onFailure(Call<ExpenseTypeResponse> call, Throwable t) {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -210,28 +217,35 @@ public class ExpenseFragment extends Fragment {
             }
         });
 
-
-        /*spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, branchNames);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-        spnBranch.setAdapter(spinnerArrayAdapter);*/
         spnBranch.setText(user.getBranch_name());
 
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(
-                getActivity(), R.array.SplitType, android.R.layout.simple_spinner_item);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnSplit.setAdapter(adapter1);
+        spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, expenseNames);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spnSplit.setAdapter(spinnerArrayAdapter);
+
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(
+                getActivity(), R.array.LrNumber, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnLrNo.setAdapter(adapter2);
+
+        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(
+                getActivity(), R.array.TripExpType, android.R.layout.simple_spinner_item);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnExpType.setAdapter(adapter3);
 
         spnSplit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String data = spnSplit.getSelectedItem().toString().trim();
                 if(data.equals("Trip Expenses")){
+                    flag=0;
                     txtLrNo.setVisibility(View.VISIBLE);
                     spnLrNo.setVisibility(View.VISIBLE);
                     txtExpType.setVisibility(View.VISIBLE);
                     spnExpType.setVisibility(View.VISIBLE);
                 }else
                 {
+                    flag=1;
                     txtLrNo.setVisibility(View.GONE);
                     spnLrNo.setVisibility(View.GONE);
                     txtExpType.setVisibility(View.GONE);
@@ -244,16 +258,6 @@ public class ExpenseFragment extends Fragment {
 
             }
         });
-
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(
-                getActivity(), R.array.LrNumber, android.R.layout.simple_spinner_item);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnLrNo.setAdapter(adapter2);
-
-        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(
-                getActivity(), R.array.TripExpType, android.R.layout.simple_spinner_item);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnExpType.setAdapter(adapter3);
 
         imgBtnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,8 +289,15 @@ public class ExpenseFragment extends Fragment {
         String expDate = edtDate.getText().toString().trim();
         String branchId = String.valueOf(user.getBranch_id());
         String expenseId = spnSplit.getSelectedItem().toString().trim();
-        String lrNumber = spnLrNo.getSelectedItem().toString().trim();
-        String tripExpenseType = spnExpType.getSelectedItem().toString().trim();
+        if(flag==1){
+            lrNumber = "";
+            tripExpenseType = "";
+        }
+        else{
+            lrNumber = spnLrNo.getSelectedItem().toString().trim();
+            tripExpenseType = spnExpType.getSelectedItem().toString().trim();
+        }
+
         String expAmount = edtAmount.getText().toString().trim();
         String expDesc = edtDesc.getText().toString().trim();
 

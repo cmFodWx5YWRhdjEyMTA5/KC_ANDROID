@@ -24,8 +24,10 @@ import android.widget.TextView;
 import com.deepak.kcl.Adapter.AdvanceAdapter;
 import com.deepak.kcl.Adapter.SplitAdvanceAdapter;
 import com.deepak.kcl.R;
+import com.deepak.kcl.Storage.SharedPrefManager;
 import com.deepak.kcl.models.AdvanceChild;
 import com.deepak.kcl.models.AdvanceHeader;
+import com.deepak.kcl.models.BranchTrips;
 import com.deepak.kcl.models.SplitAdvChild;
 import com.deepak.kcl.models.SplitAdvHeader;
 
@@ -47,6 +49,8 @@ public class SplitAdvanActivity extends AppCompatActivity {
     private SplitAdvanceAdapter splitAdvanceAdapter;
     private List<SplitAdvHeader> splitAdvanceHeader;
     List<SplitAdvChild> splitAdvanceChildList;
+    BranchTrips branchTrips;
+    TextView txtlrnumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,7 @@ public class SplitAdvanActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.splitAdvanceToolbar);
         //imgbtnAdd = findViewById(R.id.split_adv_imgBtnAdd);
         splitAdvRecyclerView = findViewById(R.id.splitAdvRecyclerView);
+        txtlrnumber = findViewById(R.id.split_advance_txtlrno);
         initializeView();
     }
 
@@ -67,6 +72,9 @@ public class SplitAdvanActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+
+        branchTrips = SharedPrefManager.getInstance(this).getBranchTrips();
+        txtlrnumber.setText(branchTrips.getLR());
 
         getsplitadvanceHeader();
         splitAdvanceAdapter = new SplitAdvanceAdapter(splitAdvanceHeader,this);
