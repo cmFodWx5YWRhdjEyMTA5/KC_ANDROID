@@ -11,7 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.deepak.kcl.Activities.TripDetailsActivity;
 import com.deepak.kcl.R;
+import com.deepak.kcl.Storage.SharedPrefManager;
 import com.deepak.kcl.models.BranchTrips;
+import com.deepak.kcl.models.BranchTripsResponse;
 import com.deepak.kcl.models.TripList;
 import java.util.List;
 
@@ -77,13 +79,12 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripLi
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
+                    SharedPrefManager.getInstance(mContext).clearTrip();
                     if (pos != RecyclerView.NO_POSITION){
                         BranchTrips clickedDataItem = mTripList.get(pos);
+                        SharedPrefManager.getInstance(mContext).saveTrip(clickedDataItem);
                         Intent intent = new Intent(mContext, TripDetailsActivity.class);
-                        intent.putExtra("clientname", mTripList.get(pos).getLR());
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
-                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getLR(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

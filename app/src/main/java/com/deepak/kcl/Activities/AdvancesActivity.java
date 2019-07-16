@@ -69,7 +69,6 @@ public class AdvancesActivity extends AppCompatActivity {
                 advanceHeader.add(new AdvanceHeader("HAPPAY", advanceChildList));
             }
             if(i==4) {
-
                 advanceHeader.add(new AdvanceHeader("OTHERS", advanceChildList));
             }
         }

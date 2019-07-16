@@ -1,14 +1,18 @@
 package com.deepak.kcl.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.deepak.kcl.Adapter.TripDetailsRecyclerView;
 import com.deepak.kcl.R;
+import com.deepak.kcl.Storage.SharedPrefManager;
+import com.deepak.kcl.models.BranchTrips;
 import com.deepak.kcl.models.TripDetails;
 
 import java.util.ArrayList;
@@ -20,6 +24,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     RecyclerView tripDetailsRecyclerView;
     TripDetailsRecyclerView mTripDetailsAdapter;
     List<TripDetails> mTripDetails;
+    BranchTrips branchTrips;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +45,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        tripDetailsRecyclerView.setLayoutManager(mLayoutManager);;
+        tripDetailsRecyclerView.setLayoutManager(mLayoutManager);
 
         loadJSON();
 

@@ -45,6 +45,7 @@ import com.deepak.kcl.Storage.SharedPrefManager;
 import com.deepak.kcl.Utils.Common;
 import com.deepak.kcl.Utils.TotalExpense;
 import com.deepak.kcl.models.Branch;
+import com.deepak.kcl.models.BranchTrips;
 import com.deepak.kcl.models.ExpenseType;
 import com.deepak.kcl.models.ExpenseTypeResponse;
 import com.deepak.kcl.models.LoadingDetails;
@@ -101,6 +102,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
     private int GALLERY = 1, CAMERA = 2;
     SpinKitView progressBar1;
     int a;
+    BranchTrips branchTrips;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +131,9 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
 
+        branchTrips = SharedPrefManager.getInstance(this).getBranchTrips();
         user = SharedPrefManager.getInstance(this).getUser();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewLoading.setLayoutManager(new LinearLayoutManager(this));
 
@@ -172,7 +176,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
     private void fillRecyclerView() {
 
         progressBar1.setVisibility(View.VISIBLE);
-        Call<TripExpenseResponse> call = RetrofitClient.getInstance().getApi().getTripExpenses(1110);
+        Call<TripExpenseResponse> call = RetrofitClient.getInstance().getApi().getTripExpenses(branchTrips.getTrip_id());
         call.enqueue(new Callback<TripExpenseResponse>() {
             @Override
             public void onResponse(Call<TripExpenseResponse> call, Response<TripExpenseResponse> response) {
@@ -200,7 +204,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
 
     private void fillLoading() {
 
-        Call<LoadingResponse> call = RetrofitClient.getInstance().getApi().getLoadUnload(1110);
+        Call<LoadingResponse> call = RetrofitClient.getInstance().getApi().getLoadUnload(branchTrips.getTrip_id());
         call.enqueue(new Callback<LoadingResponse>() {
             @Override
             public void onResponse(Call<LoadingResponse> call, Response<LoadingResponse> response) {
@@ -479,7 +483,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
         final int random = new Random().nextInt((max - min) + 1) + min;
 
         int id = user.getUser_id();
-        int tripId = 1110;
+        int tripId = branchTrips.getTrip_id();
         String imgName = tripId+"_"+random;
         int ExpenseType = a+1;
         String ExpenseAmount = edtExpAmount.getText().toString().trim();
@@ -513,7 +517,7 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
         final int random = new Random().nextInt((max - min) + 1) + min;
 
         int id = user.getUser_id();
-        int tripId = 1110;
+        int tripId = branchTrips.getTrip_id();
         String LoadingType = spnLoadingType.getSelectedItem().toString();
         String imgName = tripId+"_"+LoadingType+"_"+random;
         String LoadingQuantity = edtLoadQty.getText().toString().trim();
