@@ -17,8 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
+import com.deepak.kcl.Storage.SharedPrefManager;
 import com.deepak.kcl.models.BranchExpense;
 import com.deepak.kcl.models.BranchExpenseResponse;
+import com.deepak.kcl.models.User;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ import retrofit2.Response;
 
 public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdapter.BranchExpenseViewHolder> {
 
+    User user;
     BranchExpense branchExpense;
     private Context mContext;
     private List<BranchExpense> mBranchExpenseList;
@@ -65,7 +68,7 @@ public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdap
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OpenDeleteDialog(position);
+                OpenDeleteDialog(position,Integer.parseInt(mBranchExpenseList.get(position).getBranch_expense_id()));
             }
         });
 
@@ -109,7 +112,7 @@ public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdap
         }
     }
 
-    private void OpenDeleteDialog(int pos) {
+    private void OpenDeleteDialog(int pos,int branchExpId) {
         Button btnDelete,btncancel;
 
         final Dialog dialog=new Dialog(mContext);
@@ -122,6 +125,8 @@ public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdap
             WindowManager.LayoutParams params=dialog.getWindow().getAttributes();
             params.gravity= Gravity.CENTER_VERTICAL;
         }
+
+        user = SharedPrefManager.getInstance(mContext).getUser();
 
         btnDelete = dialog.findViewById(R.id.dialog_delete_btndelete);
         btncancel = dialog.findViewById(R.id.dialog_delete_btnCancel);
@@ -138,7 +143,7 @@ public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdap
             @Override
             public void onClick(View view) {
                 removeItem(pos);
-                Call<BranchExpenseResponse> call = RetrofitClient.getInstance().getApi().DeleteBranchExp(Integer.parseInt(branchExpense.getBranch_expense_id()),String.valueOf(branchExpense.getUser_id()));
+                Call<BranchExpenseResponse> call = RetrofitClient.getInstance().getApi().DeleteBranchExp(branchExpId,String.valueOf(user.getUser_id()));
                 call.enqueue(new Callback<BranchExpenseResponse>() {
                     @Override
                     public void onResponse(Call<BranchExpenseResponse> call, Response<BranchExpenseResponse> response) {

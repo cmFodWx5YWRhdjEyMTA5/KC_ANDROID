@@ -86,7 +86,7 @@ public class TripExpenseRecylerView extends RecyclerView.Adapter<TripExpenseRecy
         holder.imgBtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OpenDeleteDialog(position);
+                OpenDeleteDialog(position,mTripExpenseList.get(position).getTripexp_id());
             }
         });
 
@@ -123,7 +123,7 @@ public class TripExpenseRecylerView extends RecyclerView.Adapter<TripExpenseRecy
         }
     }
 
-    private void OpenDeleteDialog(int pos) {
+    private void OpenDeleteDialog(int pos,int tripExpId) {
         Button btnDelete,btncancel;
 
         final Dialog dialog=new Dialog(mContext);
@@ -155,7 +155,7 @@ public class TripExpenseRecylerView extends RecyclerView.Adapter<TripExpenseRecy
             @Override
             public void onClick(View view) {
 
-                Call<TripExpenseResponse> call = RetrofitClient.getInstance().getApi().DeleteTripExp(tripExpense.getTripexp_id(),tripId);
+                Call<TripExpenseResponse> call = RetrofitClient.getInstance().getApi().DeleteTripExp(tripExpId,tripId);
                 call.enqueue(new Callback<TripExpenseResponse>() {
                     @Override
                     public void onResponse(Call<TripExpenseResponse> call, Response<TripExpenseResponse> response) {

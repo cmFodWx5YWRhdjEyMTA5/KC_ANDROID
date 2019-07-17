@@ -84,7 +84,7 @@ public class LoadingRecyclerView extends RecyclerView.Adapter<LoadingRecyclerVie
         holder.imgBtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OpenDeleteDialog(position);
+                OpenDeleteDialog(position,Integer.parseInt(mLoadingResponseList.get(position).getLoad_id()));
             }
         });
 
@@ -116,7 +116,7 @@ public class LoadingRecyclerView extends RecyclerView.Adapter<LoadingRecyclerVie
         }
     }
 
-    private void OpenDeleteDialog(int pos) {
+    private void OpenDeleteDialog(int pos,int loadId) {
         Button btnDelete,btncancel;
 
         final Dialog dialog=new Dialog(mContext);
@@ -148,7 +148,7 @@ public class LoadingRecyclerView extends RecyclerView.Adapter<LoadingRecyclerVie
             @Override
             public void onClick(View view) {
 
-                Call<LoadingResponse> call = RetrofitClient.getInstance().getApi().DeleteLoadUnload(Integer.parseInt(loadingDetails.getLoad_id()),tripId);
+                Call<LoadingResponse> call = RetrofitClient.getInstance().getApi().DeleteLoadUnload(loadId,tripId);
                 call.enqueue(new Callback<LoadingResponse>() {
                     @Override
                     public void onResponse(Call<LoadingResponse> call, Response<LoadingResponse> response) {
