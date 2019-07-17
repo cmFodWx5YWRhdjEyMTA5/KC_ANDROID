@@ -88,7 +88,6 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), ProfileActivity.class));
-                Toast.makeText(getActivity(), "You Clicked Edit Profile", Toast.LENGTH_SHORT).show();
             }
         });
 

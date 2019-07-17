@@ -45,7 +45,6 @@ public class OngoingFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,7 +52,6 @@ public class OngoingFragment extends Fragment {
         view =  inflater.inflate(R.layout.fragment_ongoing, container, false);
         initView();
         return view;
-
     }
 
     private void initView(){
@@ -72,7 +70,7 @@ public class OngoingFragment extends Fragment {
         txtEmptyView = view.findViewById(R.id.txt_ongoing_emptyView);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         onGoingRecyclerView.setLayoutManager(mLayoutManager);;
-        onGoingRecyclerView.setAdapter(tripListAdapter);
+        //onGoingRecyclerView.setAdapter(tripListAdapter);
 
         loadJSON();
     }
@@ -111,5 +109,4 @@ public class OngoingFragment extends Fragment {
         //onGoingRecyclerView.setAdapter(new TripListAdapter(getActivity().getApplicationContext(), mtTripList));
         //onGoingRecyclerView.smoothScrollToPosition(0);
     }
-
 }

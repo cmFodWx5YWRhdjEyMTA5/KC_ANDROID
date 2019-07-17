@@ -187,31 +187,25 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
 
-        if(IMEI1.isEmpty()){
+        /*if(IMEI1.isEmpty()){
             edtIMEI1.setError("IMEI1 is Required");
             edtIMEI1.requestFocus();
             return;
-        }
+        }*/
 
-        if(IMEI1.length() < 15)
+        /*if(!IMEI1.isEmpty() && IMEI1.length() < 15)
         {
             edtIMEI1.setError("IMEI number lenght is minimum 15");
             edtIMEI1.requestFocus();
             return;
         }
 
-        if(IMEI2.length() < 15)
+        if(!IMEI2.isEmpty() &&IMEI2.length() < 15)
         {
             edtIMEI2.setError("IMEI number lenght is minimum 15");
             edtIMEI2.requestFocus();
             return;
-        }
-        Log.d("mob",String.valueOf(user.getUser_id()));
-        Log.d("mob",nm);
-        Log.d("mob",email);
-        Log.d("mob",mob);
-        Log.d("mob",IMEI1);
-        Log.d("mob",IMEI2);
+        }*/
 
         Call<LoginResponse> call = RetrofitClient.getInstance().getApi().updateUser(user.getUser_id(),nm,email,mob,IMEI1,IMEI2);
         

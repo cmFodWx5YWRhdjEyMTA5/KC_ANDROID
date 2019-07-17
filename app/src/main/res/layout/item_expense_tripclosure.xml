@@ -69,4 +69,5 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trip_exp_amount" />
+
 </android.support.constraint.ConstraintLayout>

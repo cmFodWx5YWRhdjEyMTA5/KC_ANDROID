@@ -432,7 +432,6 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         spnExpenseType.setAdapter(spinnerArrayAdapter);
 
-
         imgBtnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -479,7 +478,6 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
     }
 
     private void AddTripExpense() {
-
 
         final int min = 2000;
         final int max = 8000;
@@ -544,7 +542,6 @@ public class TripClosureActivity extends AppCompatActivity implements TotalExpen
                 Toast.makeText(TripClosureActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void  requestMultiplePermissions(){
