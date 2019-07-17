@@ -4,8 +4,10 @@ import com.deepak.kcl.models.BranchExpenseResponse;
 import com.deepak.kcl.models.BranchResponse;
 import com.deepak.kcl.models.BranchTripsResponse;
 import com.deepak.kcl.models.ExpenseTypeResponse;
+import com.deepak.kcl.models.JourneyIdResponse;
 import com.deepak.kcl.models.LoadingResponse;
 import com.deepak.kcl.models.LoginResponse;
+import com.deepak.kcl.models.TripAdvanceResponse;
 import com.deepak.kcl.models.TripExpenseResponse;
 
 import retrofit2.Call;
@@ -110,5 +112,29 @@ public interface Api {
     @GET("getTripByBranch/{id}")
     Call<BranchTripsResponse> getTripByBranch(
             @Path("id") int id
+    );
+
+    @GET("getTripAdvances/{id}")
+    Call<TripAdvanceResponse> getTripAdvances(
+            @Path("id") int id
+    );
+
+    @GET("getJourneyId/{id}")
+    Call<JourneyIdResponse> getJourneyId(
+            @Path("id") int id
+    );
+
+    @FormUrlEncoded
+    @PUT("DeleteLoadUnload/{id}")
+    Call<LoadingResponse> DeleteLoadUnload(
+            @Path("id") int id,
+            @Field("tripid") String tripid
+    );
+
+    @FormUrlEncoded
+    @PUT("DeleteTripExp/{id}")
+    Call<TripExpenseResponse> DeleteTripExp(
+            @Path("id") int id,
+            @Field("tripid") String tripid
     );
 }

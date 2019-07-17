@@ -1,22 +1,19 @@
 package com.deepak.kcl.models;
 
-import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
-import com.thoughtbot.expandablerecyclerview.models.ExpandableList;
-
-import java.util.List;
-
-public class AdvanceChild {
+public class TripAdvance {
 
     private String date;
     private String amount;
     private String branch;
     private String desc;
+    private String trip_exp_type;
 
-    public AdvanceChild(String date, String amount, String branch, String desc) {
+    public TripAdvance(String date, String amount, String branch, String desc, String trip_exp_type) {
         this.date = date;
         this.amount = amount;
         this.branch = branch;
         this.desc = desc;
+        this.trip_exp_type = trip_exp_type;
     }
 
     public String getDate() {
@@ -49,5 +46,24 @@ public class AdvanceChild {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getTrip_exp_type() {
+        return trip_exp_type;
+    }
+
+    public void setTrip_exp_type(String trip_exp_type) {
+        this.trip_exp_type = trip_exp_type;
+    }
+
+    @Override
+    public String toString() {
+        return "TripAdvance{" +
+                "date='" + date + '\'' +
+                ", amount='" + amount + '\'' +
+                ", branch='" + branch + '\'' +
+                ", desc='" + desc + '\'' +
+                ", trip_exp_type='" + trip_exp_type + '\'' +
+                '}';
     }
 }

@@ -1,32 +1,41 @@
 package com.deepak.kcl.Activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.deepak.kcl.Adapter.AdvanceAdapter;
+import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
-import com.deepak.kcl.models.AdvanceChild;
-import com.deepak.kcl.models.AdvanceHeader;
+import com.deepak.kcl.ViewHolders.AdvChildViewHolder;
+import com.deepak.kcl.ViewHolders.AdvHeaderViewHolder;
 import com.deepak.kcl.models.BranchTrips;
+import com.deepak.kcl.models.TripAdvance;
+import com.deepak.kcl.models.TripAdvanceResponse;
+import com.mindorks.placeholderview.ExpandablePlaceHolderView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AdvancesActivity extends AppCompatActivity {
 
+    private Map<String,List<TripAdvance>> mHeading;
+    private List<TripAdvance> advanceList;
+    private ExpandablePlaceHolderView expandablePlaceHolderView;
     Toolbar toolbar;
-    private RecyclerView advRecyclerView;
-    private AdvanceAdapter advanceAdapter;
-    private List<AdvanceHeader> advanceHeader;
-    List<AdvanceChild> advanceChildList;
     TextView txtlrnumber;
     BranchTrips branchTrips;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +45,7 @@ public class AdvancesActivity extends AppCompatActivity {
 
     private void initView() {
         toolbar = findViewById(R.id.advanceToolbar);
-        advRecyclerView = findViewById(R.id.Adv_recyclerview);
+        expandablePlaceHolderView = findViewById(R.id.Adv_recyclerview);
         txtlrnumber = findViewById(R.id.advance_txt_lrno);
         initializeView();
     }
@@ -50,37 +59,51 @@ public class AdvancesActivity extends AppCompatActivity {
         branchTrips = SharedPrefManager.getInstance(this).getBranchTrips();
         txtlrnumber.setText(branchTrips.getLR());
 
-        getadvanceHeader();
-        advanceAdapter = new AdvanceAdapter(advanceHeader,this);
-        advRecyclerView.setLayoutManager(new LinearLayoutManager(AdvancesActivity.this));
-        advRecyclerView.setAdapter(advanceAdapter);
+        advanceList = new ArrayList<>();
+        mHeading = new HashMap<>();
+
+        loadData();
     }
 
-    private void getadvanceHeader() {
-        advanceHeader = new ArrayList<>(5);
-        for(int i = 0; i < 5; i++)
-        {
-            advanceChildList = new ArrayList<>();
-            if(i==0) {
-                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Mumbbai HO","Fuel Charge Day1"));
-                advanceChildList.add(new AdvanceChild("04 June'19", "Rs.10000", "HO", "Fuel Charge Day2"));
-                advanceHeader.add(new AdvanceHeader("IOCL", advanceChildList));
+    private void loadData() {
+
+        Call<TripAdvanceResponse> call = RetrofitClient.getInstance().getApi().getTripAdvances(Integer.parseInt(branchTrips.getLR()));
+        call.enqueue(new Callback<TripAdvanceResponse>() {
+            @Override
+            public void onResponse(Call<TripAdvanceResponse> call, Response<TripAdvanceResponse> response) {
+                advanceList =  response.body().getTripAdvance();
+                getHeaderAndChild(advanceList);
             }
-            if(i==1) {
-                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Jaipur","Fuel Charge Day1"));
-                advanceHeader.add(new AdvanceHeader("CASH", advanceChildList));
+
+            @Override
+            public void onFailure(Call<TripAdvanceResponse> call, Throwable t) {
+
             }
-            if(i==2) {
-                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Nagpur","Fuel Charge Day1"));
-                advanceHeader.add(new AdvanceHeader("BANK", advanceChildList));
+        });
+    }
+
+    private void getHeaderAndChild(List<TripAdvance> tripAdvances){
+
+        for (TripAdvance tripAdvance : tripAdvances ){
+            List<TripAdvance> tripAdvances1 = mHeading.get(tripAdvance.getTrip_exp_type());
+            if(tripAdvances1 == null){
+                tripAdvances1 = new ArrayList<>();
             }
-            if(i==3) {
-                advanceChildList.add(new AdvanceChild("05 June'19", "Rs.10000", "Banglore","Fuel Charge Day1"));
-                advanceHeader.add(new AdvanceHeader("HAPPAY", advanceChildList));
+            tripAdvances1.add(tripAdvance);
+            mHeading.put(tripAdvance.getTrip_exp_type(),tripAdvances1);
+        }
+
+        Log.d("Map",mHeading.toString());
+        Iterator it = mHeading.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            Log.d("Key", pair.getKey().toString());
+            expandablePlaceHolderView.addView(new AdvHeaderViewHolder(this, pair.getKey().toString()));
+            List<TripAdvance> tripAdvances2 = (List<TripAdvance>) pair.getValue();
+            for (TripAdvance tripAdvance : tripAdvances2){
+                expandablePlaceHolderView.addView(new AdvChildViewHolder(this, tripAdvance));
             }
-            if(i==4) {
-                advanceHeader.add(new AdvanceHeader("OTHERS", advanceChildList));
-            }
+            it.remove();
         }
     }
 
@@ -92,7 +115,4 @@ public class AdvancesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setAdvanceHeader(List<AdvanceHeader> advanceHeader) {
-        this.advanceHeader = advanceHeader;
-    }
 }

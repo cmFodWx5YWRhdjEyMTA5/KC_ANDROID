@@ -21,12 +21,9 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.deepak.kcl.Adapter.AdvanceAdapter;
 import com.deepak.kcl.Adapter.SplitAdvanceAdapter;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
-import com.deepak.kcl.models.AdvanceChild;
-import com.deepak.kcl.models.AdvanceHeader;
 import com.deepak.kcl.models.BranchTrips;
 import com.deepak.kcl.models.SplitAdvChild;
 import com.deepak.kcl.models.SplitAdvHeader;

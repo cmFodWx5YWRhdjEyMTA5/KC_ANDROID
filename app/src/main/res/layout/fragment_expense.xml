@@ -47,7 +47,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:gravity="center_horizontal"
-        android:text="Branch Expense"
+        android:text="Branch Expenses"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

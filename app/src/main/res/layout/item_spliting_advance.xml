@@ -32,9 +32,9 @@
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/item_split_txtAmt"
+        app:layout_constraintBottom_toBottomOf="@+id/item_split_txtType"
         app:layout_constraintEnd_toStartOf="@+id/item_split_txtAmt"
-        app:layout_constraintTop_toTopOf="@+id/item_split_txtAmt" />
+        app:layout_constraintTop_toTopOf="@+id/item_split_txtType" />
 
     <TextView
         android:id="@+id/textView58"
@@ -96,15 +96,15 @@
         android:id="@+id/item_split_txtAmt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="Rs. 10000/-"
         android:textColor="@color/colorongoing"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView55"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_split_btnDelete" />
+        app:layout_constraintTop_toTopOf="@+id/textView55" />
 
     <TextView
         android:id="@+id/item_split_txtType"

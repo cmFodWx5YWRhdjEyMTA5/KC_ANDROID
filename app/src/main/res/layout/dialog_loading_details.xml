@@ -105,7 +105,8 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="Quantity"
-            android:inputType="textPersonName"
+            android:maxLength="6"
+            android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="@+id/dialog_loading_spnchoose"
             app:layout_constraintStart_toStartOf="@+id/dialog_loading_spnchoose"
             app:layout_constraintTop_toBottomOf="@+id/dialog_loading_spnchoose" />

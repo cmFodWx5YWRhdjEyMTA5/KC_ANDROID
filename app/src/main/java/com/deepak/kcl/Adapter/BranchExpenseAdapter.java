@@ -103,7 +103,7 @@ public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdap
             txtLrNumber = itemView.findViewById(R.id.item_brachExpense_LrNo);
             txtTripExpType = itemView.findViewById(R.id.item_brachExpense_TripExpType);
             txtAmount = itemView.findViewById(R.id.item_brachExpense_amount);
-            btnEdit = itemView.findViewById(R.id.item_brachExpense_btnEdit);
+            btnEdit = itemView.findViewById(R.id.item_brachExpense_btnView);
             btnDelete = itemView.findViewById(R.id.item_brachExpense_btnDelete);
 
         }

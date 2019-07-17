@@ -24,19 +24,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.deepak.kcl.Activities.TripClosureActivity;
 import com.deepak.kcl.Adapter.BranchExpenseAdapter;
-import com.deepak.kcl.Adapter.TripExpenseRecylerView;
 import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
-import com.deepak.kcl.models.Branch;
 import com.deepak.kcl.models.BranchExpense;
 import com.deepak.kcl.models.BranchExpenseResponse;
-import com.deepak.kcl.models.BranchResponse;
 import com.deepak.kcl.models.ExpenseType;
 import com.deepak.kcl.models.ExpenseTypeResponse;
-import com.deepak.kcl.models.TripExpense;
+import com.deepak.kcl.models.JourneyId;
+import com.deepak.kcl.models.JourneyIdResponse;
 import com.deepak.kcl.models.User;
 import com.github.ybq.android.spinkit.SpinKitView;
 
@@ -60,10 +57,12 @@ public class ExpenseFragment extends Fragment {
     int month;
     int dayOfMonth;
     Calendar calendar;
-    private List<Branch> branchList;
     private ArrayList<String> expenseNames = new ArrayList<String>();
     private List<ExpenseType> expenseList;
+    private ArrayList<String> jourrneyid = new ArrayList<String>();
+    private List<JourneyId> mJourneyIds;
     ArrayAdapter<String> spinnerArrayAdapter;
+    ArrayAdapter<String> journeyIdArrayAdapter;
     RecyclerView recyclerBranchExp;
     BranchExpenseAdapter branchExpenseAdapter;
     TextView txtEmptyView;
@@ -131,6 +130,24 @@ public class ExpenseFragment extends Fragment {
             @Override
             public void onFailure(Call<ExpenseTypeResponse> call, Throwable t) {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Call<JourneyIdResponse> call1 = RetrofitClient.getInstance().getApi().getJourneyId(user.getBranch_id());
+        call1.enqueue(new Callback<JourneyIdResponse>() {
+            @Override
+            public void onResponse(Call<JourneyIdResponse> call, Response<JourneyIdResponse> response) {
+                jourrneyid.clear();
+                mJourneyIds = response.body().getJourneyID();
+
+                for (int i = 0; i < mJourneyIds.size(); i++){
+                    jourrneyid.add(mJourneyIds.get(i).getJourneyId().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JourneyIdResponse> call, Throwable t) {
+
             }
         });
 
@@ -223,10 +240,9 @@ public class ExpenseFragment extends Fragment {
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         spnSplit.setAdapter(spinnerArrayAdapter);
 
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(
-                getActivity(), R.array.LrNumber, android.R.layout.simple_spinner_item);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnLrNo.setAdapter(adapter2);
+        journeyIdArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, jourrneyid);
+        journeyIdArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spnLrNo.setAdapter(journeyIdArrayAdapter);
 
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(
                 getActivity(), R.array.TripExpType, android.R.layout.simple_spinner_item);
@@ -316,5 +332,4 @@ public class ExpenseFragment extends Fragment {
         });
 
     }
-
 }

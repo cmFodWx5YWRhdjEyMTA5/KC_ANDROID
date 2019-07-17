@@ -83,4 +83,6 @@ dependencies {
     //SpinKit
     implementation 'com.github.ybq:Android-SpinKit:1.2.0'
 
+    implementation 'com.mindorks:placeholderview:0.7.1'
+
 }
