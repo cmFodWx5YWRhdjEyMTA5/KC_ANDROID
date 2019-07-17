@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.deepak.kcl.Fragments.ExpenseFragment;
 import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
@@ -106,7 +108,7 @@ public class BranchExpenseAdapter extends RecyclerView.Adapter<BranchExpenseAdap
             txtLrNumber = itemView.findViewById(R.id.item_brachExpense_LrNo);
             txtTripExpType = itemView.findViewById(R.id.item_brachExpense_TripExpType);
             txtAmount = itemView.findViewById(R.id.item_brachExpense_amount);
-            btnEdit = itemView.findViewById(R.id.item_brachExpense_btnView);
+            btnEdit = itemView.findViewById(R.id.item_brachExpense_btnEdit);
             btnDelete = itemView.findViewById(R.id.item_brachExpense_btnDelete);
 
         }
