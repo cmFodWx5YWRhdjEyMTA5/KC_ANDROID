@@ -116,7 +116,7 @@ public interface Api {
 
     @GET("getTripAdvances/{id}")
     Call<TripAdvanceResponse> getTripAdvances(
-            @Path("id") int id
+            @Path("id") String id
     );
 
     @GET("getJourneyId/{id}")

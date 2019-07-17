@@ -67,7 +67,7 @@ public class AdvancesActivity extends AppCompatActivity {
 
     private void loadData() {
 
-        Call<TripAdvanceResponse> call = RetrofitClient.getInstance().getApi().getTripAdvances(Integer.parseInt(branchTrips.getLR()));
+        Call<TripAdvanceResponse> call = RetrofitClient.getInstance().getApi().getTripAdvances(branchTrips.getLR());
         call.enqueue(new Callback<TripAdvanceResponse>() {
             @Override
             public void onResponse(Call<TripAdvanceResponse> call, Response<TripAdvanceResponse> response) {
