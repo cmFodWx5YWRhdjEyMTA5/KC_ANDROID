@@ -7,6 +7,7 @@ import com.deepak.kcl.models.ExpenseTypeResponse;
 import com.deepak.kcl.models.JourneyIdResponse;
 import com.deepak.kcl.models.LoadingResponse;
 import com.deepak.kcl.models.LoginResponse;
+import com.deepak.kcl.models.SplitAdvHeadResponse;
 import com.deepak.kcl.models.TripAdvanceResponse;
 import com.deepak.kcl.models.TripExpenseResponse;
 
@@ -136,5 +137,10 @@ public interface Api {
     Call<TripExpenseResponse> DeleteTripExp(
             @Path("id") int id,
             @Field("tripid") String tripid
+    );
+
+    @GET("getSplitAdvHeading/{id}")
+    Call<SplitAdvHeadResponse> getSplitAdvHeading(
+            @Path("id") String id
     );
 }

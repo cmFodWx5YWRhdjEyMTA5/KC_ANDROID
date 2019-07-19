@@ -15,7 +15,6 @@
 
     <string-array name="SplitType">
         <item>Cash</item>
-        <item>Trip Expenses</item>
         <item>Fuel</item>
     </string-array>
 

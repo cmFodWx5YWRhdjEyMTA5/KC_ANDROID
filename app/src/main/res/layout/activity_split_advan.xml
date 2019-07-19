@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".Activities.SplitAdvanActivity">
 
+    <ImageButton
+        android:id="@+id/heading_btn_splitAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@null"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toTopOf="@+id/divider16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider13" />
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="0dp"
@@ -97,7 +111,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/status_txt_date" />
 
-    <android.support.v7.widget.RecyclerView
+    <com.mindorks.placeholderview.ExpandablePlaceHolderView
         android:id="@+id/splitAdvRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"

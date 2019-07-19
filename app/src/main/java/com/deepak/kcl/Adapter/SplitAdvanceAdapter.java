@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 
 import com.deepak.kcl.R;
 import com.deepak.kcl.ViewHolders.SplitAdvHeadViewHolder;
-import com.deepak.kcl.ViewHolders.SplitAdvItemViewHolder;
+//import com.deepak.kcl.ViewHolders.SplitAdvItemViewHolder;
 import com.deepak.kcl.models.SplitAdvChild;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
 import java.util.List;
 
-public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdvHeadViewHolder, SplitAdvItemViewHolder> {
+/*public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdvHeadViewHolder, SplitAdvItemViewHolder> {
 
     private Context mContext;
 
@@ -50,4 +50,4 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdvH
     public void onBindGroupViewHolder(SplitAdvHeadViewHolder holder, int flatPosition, ExpandableGroup group) {
         holder.setHeadName(group.getTitle());
     }
-}
+}*/
