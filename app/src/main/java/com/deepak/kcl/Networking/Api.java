@@ -10,6 +10,7 @@ import com.deepak.kcl.models.LoginResponse;
 import com.deepak.kcl.models.SplitAdvHeadResponse;
 import com.deepak.kcl.models.TripAdvanceResponse;
 import com.deepak.kcl.models.TripExpenseResponse;
+import com.deepak.kcl.models.SplitAdvDataResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -141,6 +142,11 @@ public interface Api {
 
     @GET("getSplitAdvHeading/{id}")
     Call<SplitAdvHeadResponse> getSplitAdvHeading(
+            @Path("id") String id
+    );
+
+    @GET("getSplitAdvData/{id}")
+    Call<SplitAdvDataResponse> getSplitAdvData(
             @Path("id") String id
     );
 }

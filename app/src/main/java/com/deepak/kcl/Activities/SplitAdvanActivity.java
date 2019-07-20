@@ -26,8 +26,11 @@ import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
 import com.deepak.kcl.ViewHolders.SplitAdvHeadViewHolder;
+import com.deepak.kcl.ViewHolders.SplitAdvItemViewHolder;
 import com.deepak.kcl.models.BranchTrips;
 import com.deepak.kcl.models.SplitAdvChild;
+import com.deepak.kcl.models.SplitAdvData;
+import com.deepak.kcl.models.SplitAdvDataResponse;
 import com.deepak.kcl.models.SplitAdvHead;
 import com.deepak.kcl.models.SplitAdvHeadResponse;
 import com.deepak.kcl.models.SplitAdvHeader;
@@ -50,6 +53,9 @@ public class SplitAdvanActivity extends AppCompatActivity {
 
     private Map<String,List<SplitAdvHead>> mHeading;
     private List<SplitAdvHead> advanceList;
+    private List<SplitAdvData> advDataList;
+    List<SplitAdvHead> splitAdvances2;
+    Map<String,String> splitAdvances1;
     private ExpandablePlaceHolderView expandablePlaceHolderView;
     Toolbar toolbar;
     ImageButton imgbtnAdd;
@@ -59,6 +65,7 @@ public class SplitAdvanActivity extends AppCompatActivity {
     int dayOfMonth;
     Calendar calendar;
     User user;
+    int countHead=0;
 
     private RecyclerView splitAdvRecyclerView;
     //private SplitAdvanceAdapter splitAdvanceAdapter;
@@ -66,6 +73,8 @@ public class SplitAdvanActivity extends AppCompatActivity {
     List<SplitAdvChild> splitAdvanceChildList;
     BranchTrips branchTrips;
     TextView txtlrnumber;
+
+    Map<String,String> hashMap = new HashMap<String,String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +135,19 @@ public class SplitAdvanActivity extends AppCompatActivity {
             }
         });
 
+        Call<SplitAdvDataResponse> call1 = RetrofitClient.getInstance().getApi().getSplitAdvData(branchTrips.getLR());
+        call1.enqueue(new Callback<SplitAdvDataResponse>() {
+            @Override
+            public void onResponse(Call<SplitAdvDataResponse> call, Response<SplitAdvDataResponse> response) {
+                advDataList = response.body().getSplitAdvanceData();
+            }
+
+            @Override
+            public void onFailure(Call<SplitAdvDataResponse> call, Throwable t) {
+                Toast.makeText(SplitAdvanActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void getHeaderAndChild(List<SplitAdvHead> splitAdvHeads){
@@ -144,26 +166,35 @@ public class SplitAdvanActivity extends AppCompatActivity {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             Log.d("Key", pair.getKey().toString());
-            List<SplitAdvHead> splitAdvances2 = (List<SplitAdvHead>) pair.getValue();
+            //splitAdvances1.put(pair.getKey().toString(),pair.getValue().toString());
+            splitAdvances2 = (List<SplitAdvHead>) pair.getValue();
+            hashMap.put(pair.getKey().toString(),splitAdvances2.get(0).getAmount());
+
            expandablePlaceHolderView.addView(new SplitAdvHeadViewHolder(this, pair.getKey().toString(),"Rs."+splitAdvances2.get(0).getAmount()));
-           /* for (SplitAdvHead tripAdvance : splitAdvances2){
+            for (SplitAdvHead tripAdvance : splitAdvances2){
                 expandablePlaceHolderView.addView(new SplitAdvItemViewHolder(this, tripAdvance));
-            }*/
+            }
             it.remove();
         }
+
+       for(String head : hashMap.keySet()){
+           String amount = hashMap.get(head);
+            countHead = countHead+1;
+           Log.d("DeepakTest","Key = " + head + ", Value = " + amount);
+       }
     }
 
-    /*private void getsplitadvanceHeader() {
-        splitAdvanceHeader = new ArrayList<>(5);
+    private void getsplitadvanceHeader() {
+        splitAdvanceHeader = new ArrayList<>(countHead);
         for(int i = 0; i < 5; i++)
         {
             splitAdvanceChildList = new ArrayList<>();
             if(i==0) {
                 splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
                 splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
-                splitAdvanceHeader.add(new SplitAdvHeader("IOCL", splitAdvanceChildList));
+                splitAdvanceHeader.add(new SplitAdvHeader("IOCL","2222", splitAdvanceChildList));
             }
-            if(i==1) {
+           /* if(i==1) {
                 splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
                 splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
                 splitAdvanceHeader.add(new SplitAdvHeader("CASH", splitAdvanceChildList));
@@ -182,9 +213,9 @@ public class SplitAdvanActivity extends AppCompatActivity {
                 splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
                 splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
                 splitAdvanceHeader.add(new SplitAdvHeader("OTHERS", splitAdvanceChildList));
-            }
+            }*/
         }
-    }*/
+    }
 
     private void OpenAddExpenseDialog() {
         Button btnSave,btnCancel;

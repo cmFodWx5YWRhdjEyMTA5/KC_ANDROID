@@ -18,7 +18,7 @@ import java.util.List;
 
 public class SplitAdvHeader extends ExpandableGroup {
 
-    public SplitAdvHeader(String title, List items) {
+    public SplitAdvHeader(String title,String Amount, List items) {
         super(title, items);
     }
 }
