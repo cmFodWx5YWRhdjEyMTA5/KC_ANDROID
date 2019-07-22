@@ -111,7 +111,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/status_txt_date" />
 
-    <com.mindorks.placeholderview.ExpandablePlaceHolderView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/splitAdvRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"

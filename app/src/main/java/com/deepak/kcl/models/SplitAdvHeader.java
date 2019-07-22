@@ -1,6 +1,7 @@
 package com.deepak.kcl.models;
 
 import android.content.Context;
+import android.os.Parcel;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class SplitAdvHeader extends ExpandableGroup {
 
-    public SplitAdvHeader(String title,String Amount, List items) {
+    public SplitAdvHeader(String title, List items) {
         super(title, items);
     }
 }

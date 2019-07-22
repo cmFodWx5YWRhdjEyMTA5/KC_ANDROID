@@ -8,13 +8,15 @@ import android.view.ViewGroup;
 import com.deepak.kcl.R;
 import com.deepak.kcl.ViewHolders.SplitAdvHeadViewHolder;
 //import com.deepak.kcl.ViewHolders.SplitAdvItemViewHolder;
+import com.deepak.kcl.ViewHolders.SplitAdvItemViewHolder;
 import com.deepak.kcl.models.SplitAdvChild;
+import com.deepak.kcl.models.SplitAdvData;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
 import java.util.List;
 
-/*public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdvHeadViewHolder, SplitAdvItemViewHolder> {
+public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdvHeadViewHolder, SplitAdvItemViewHolder> {
 
     private Context mContext;
 
@@ -37,17 +39,17 @@ import java.util.List;
 
     @Override
     public void onBindChildViewHolder(SplitAdvItemViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
-        SplitAdvChild splitAdvChild = (SplitAdvChild) group.getItems().get(childIndex);
+        SplitAdvData splitAdvData = (SplitAdvData) group.getItems().get(childIndex);
 
-        holder.setSplitDate(splitAdvChild.getDate());
-        holder.setSplitType(splitAdvChild.getType());
-        holder.setSplitAmount(splitAdvChild.getAmount());
-        holder.setSplitBranch(splitAdvChild.getBranch());
-        holder.setSplitDesc(splitAdvChild.getDesc());
+        holder.setSplitDate(splitAdvData.getSplit_date());
+        holder.setSplitType(splitAdvData.getSplit_type());
+        holder.setSplitAmount(splitAdvData.getAmount());
+        holder.setSplitBranch(splitAdvData.getBranch_name());
+        holder.setSplitDesc(splitAdvData.getDescription());
     }
 
     @Override
     public void onBindGroupViewHolder(SplitAdvHeadViewHolder holder, int flatPosition, ExpandableGroup group) {
         holder.setHeadName(group.getTitle());
     }
-}*/
+}

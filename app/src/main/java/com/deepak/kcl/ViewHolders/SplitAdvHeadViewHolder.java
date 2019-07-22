@@ -14,7 +14,27 @@ import com.mindorks.placeholderview.annotations.expand.Parent;
 import com.mindorks.placeholderview.annotations.expand.SingleTop;
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
-@Parent
+public class SplitAdvHeadViewHolder extends GroupViewHolder {
+
+    private TextView txtHeadSplitAdv,txtHeadSplitAmt;
+    public SplitAdvHeadViewHolder(View itemView) {
+        super(itemView);
+
+        txtHeadSplitAdv = (TextView) itemView.findViewById(R.id.heading_txt_advType);
+        txtHeadSplitAmt = (TextView) itemView.findViewById(R.id.heading_txt_splitAdvAmt);
+    }
+
+    public void setHeadName(String name)
+    {
+        txtHeadSplitAdv.setText(name);
+    }
+
+    public void setAmount(String amount)
+    {
+        txtHeadSplitAmt.setText(amount);
+    }
+}
+/*@Parent
 @SingleTop
 @Layout(R.layout.heading_spliting_advance)
 public class SplitAdvHeadViewHolder {
@@ -52,4 +72,4 @@ public class SplitAdvHeadViewHolder {
     private void onCollapse(){
         Log.d(TAG, "onCollapse");
     }
-}
+}*/

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.deepak.kcl.Adapter.SplitAdvanceAdapter;
 import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
@@ -68,9 +70,9 @@ public class SplitAdvanActivity extends AppCompatActivity {
     int countHead=0;
 
     private RecyclerView splitAdvRecyclerView;
-    //private SplitAdvanceAdapter splitAdvanceAdapter;
+    private SplitAdvanceAdapter splitAdvanceAdapter;
     private List<SplitAdvHeader> splitAdvanceHeader;
-    List<SplitAdvChild> splitAdvanceChildList;
+    List<SplitAdvData> splitAdvanceChildList;
     BranchTrips branchTrips;
     TextView txtlrnumber;
 
@@ -86,7 +88,8 @@ public class SplitAdvanActivity extends AppCompatActivity {
     private void initView() {
         toolbar = findViewById(R.id.splitAdvanceToolbar);
         imgbtnAdd = findViewById(R.id.heading_btn_splitAdd);
-        expandablePlaceHolderView = findViewById(R.id.splitAdvRecyclerView);
+       // expandablePlaceHolderView = findViewById(R.id.splitAdvRecyclerView);
+        splitAdvRecyclerView = findViewById(R.id.splitAdvRecyclerView);
         txtlrnumber = findViewById(R.id.split_advance_txtlrno);
         initializeView();
     }
@@ -105,11 +108,6 @@ public class SplitAdvanActivity extends AppCompatActivity {
         mHeading = new HashMap<>();
 
         loadData();
-
-       /* getsplitadvanceHeader();
-        splitAdvanceAdapter = new SplitAdvanceAdapter(splitAdvanceHeader,this);
-        splitAdvRecyclerView.setLayoutManager(new LinearLayoutManager(SplitAdvanActivity.this));
-        splitAdvRecyclerView.setAdapter(splitAdvanceAdapter);*/
 
        imgbtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +137,9 @@ public class SplitAdvanActivity extends AppCompatActivity {
         call1.enqueue(new Callback<SplitAdvDataResponse>() {
             @Override
             public void onResponse(Call<SplitAdvDataResponse> call, Response<SplitAdvDataResponse> response) {
-                advDataList = response.body().getSplitAdvanceData();
+                splitAdvanceChildList = response.body().getSplitAdvanceData();
+
+                Log.d("TESTCALL",String.valueOf(splitAdvanceChildList.size()));
             }
 
             @Override
@@ -170,10 +170,10 @@ public class SplitAdvanActivity extends AppCompatActivity {
             splitAdvances2 = (List<SplitAdvHead>) pair.getValue();
             hashMap.put(pair.getKey().toString(),splitAdvances2.get(0).getAmount());
 
-           expandablePlaceHolderView.addView(new SplitAdvHeadViewHolder(this, pair.getKey().toString(),"Rs."+splitAdvances2.get(0).getAmount()));
-            for (SplitAdvHead tripAdvance : splitAdvances2){
+           //expandablePlaceHolderView.addView(new SplitAdvHeadViewHolder(this, pair.getKey().toString(),"Rs."+splitAdvances2.get(0).getAmount()));
+            /*for (SplitAdvHead tripAdvance : splitAdvances2){
                 expandablePlaceHolderView.addView(new SplitAdvItemViewHolder(this, tripAdvance));
-            }
+            }*/
             it.remove();
         }
 
@@ -182,40 +182,44 @@ public class SplitAdvanActivity extends AppCompatActivity {
             countHead = countHead+1;
            Log.d("DeepakTest","Key = " + head + ", Value = " + amount);
        }
+
+        getSplitAdvanceHeader();
+        splitAdvanceAdapter = new SplitAdvanceAdapter(splitAdvanceHeader,this);
+        splitAdvRecyclerView.setLayoutManager(new LinearLayoutManager(SplitAdvanActivity.this));
+        splitAdvRecyclerView.setAdapter(splitAdvanceAdapter);
     }
 
-    private void getsplitadvanceHeader() {
+    private void getSplitAdvanceHeader() {
+
+        int ab=0;
         splitAdvanceHeader = new ArrayList<>(countHead);
-        for(int i = 0; i < 5; i++)
-        {
-            splitAdvanceChildList = new ArrayList<>();
-            if(i==0) {
-                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
-                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
-                splitAdvanceHeader.add(new SplitAdvHeader("IOCL","2222", splitAdvanceChildList));
+        //for(int i = 0; i < countHead; i++)
+        for (String head1 : hashMap.keySet())
+            {
+                /*if(splitAdvanceChildList.get(ab).getSplit_head().equals("CASH")){
+                    advDataList = splitAdvanceChildList;
+                }*/
+
+                String amt = hashMap.get(head1);
+
+                //splitAdvanceChildList = new ArrayList<>();
+                if (head1.equals("OTHERS")) {
+                    //splitAdvanceChildList.add(new SplitAdvData("05 June'19", "HO","FUEL", "Rs."+amt, "Fuel Charge Day1", head1));
+                    splitAdvanceHeader.add(new SplitAdvHeader(head1, splitAdvanceChildList));
+                }
+                if (head1.equals("CASH")) {
+                    //splitAdvanceChildList.add(new SplitAdvData("05 June'19", "HO","FUEL", "Rs."+amt, "Fuel Charge Day1", head1));
+                    splitAdvanceHeader.add(new SplitAdvHeader(head1, splitAdvanceChildList));
+                }
+                if (head1.equals("IOCL")) {
+                    //splitAdvanceChildList.add(new SplitAdvData("05 June'19", "HO","FUEL", "Rs."+amt, "Fuel Charge Day1", head1));
+                    splitAdvanceHeader.add(new SplitAdvHeader(head1, splitAdvanceChildList));
+                }
+
+                //ab = ab+1;
             }
-           /* if(i==1) {
-                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
-                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
-                splitAdvanceHeader.add(new SplitAdvHeader("CASH", splitAdvanceChildList));
-            }
-            if(i==2) {
-                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
-                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
-                splitAdvanceHeader.add(new SplitAdvHeader("BANK", splitAdvanceChildList));
-            }
-            if(i==3) {
-                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
-                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
-                splitAdvanceHeader.add(new SplitAdvHeader("HAPPAY", splitAdvanceChildList));
-            }
-            if(i==4) {
-                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.10000/-","HO","Fuel Charge Day1"));
-                splitAdvanceChildList.add(new SplitAdvChild("05 June'19","FUEL","Rs.5000/-","HO","Fuel Charge Day2"));
-                splitAdvanceHeader.add(new SplitAdvHeader("OTHERS", splitAdvanceChildList));
-            }*/
-        }
     }
+
 
     private void OpenAddExpenseDialog() {
         Button btnSave,btnCancel;
