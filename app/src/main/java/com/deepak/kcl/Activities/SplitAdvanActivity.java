@@ -53,11 +53,11 @@ import retrofit2.Response;
 public class SplitAdvanActivity extends AppCompatActivity {
 
 
-    private Map<String,List<SplitAdvHead>> mHeading;
+    private Map<String, List<SplitAdvHead>> mHeading;
     private List<SplitAdvHead> advanceList;
     private List<SplitAdvData> advDataList;
     List<SplitAdvHead> splitAdvances2;
-    Map<String,String> splitAdvances1;
+    Map<String, String> splitAdvances1;
     private ExpandablePlaceHolderView expandablePlaceHolderView;
     Toolbar toolbar;
     ImageButton imgbtnAdd;
@@ -67,7 +67,8 @@ public class SplitAdvanActivity extends AppCompatActivity {
     int dayOfMonth;
     Calendar calendar;
     User user;
-    int countHead=0;
+    int countHead = 0;
+    int advSize = 0;
 
     private RecyclerView splitAdvRecyclerView;
     private SplitAdvanceAdapter splitAdvanceAdapter;
@@ -76,7 +77,7 @@ public class SplitAdvanActivity extends AppCompatActivity {
     BranchTrips branchTrips;
     TextView txtlrnumber;
 
-    Map<String,String> hashMap = new HashMap<String,String>();
+    Map<String, String> hashMap = new HashMap<String, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,7 @@ public class SplitAdvanActivity extends AppCompatActivity {
     private void initView() {
         toolbar = findViewById(R.id.splitAdvanceToolbar);
         imgbtnAdd = findViewById(R.id.heading_btn_splitAdd);
-       // expandablePlaceHolderView = findViewById(R.id.splitAdvRecyclerView);
+        // expandablePlaceHolderView = findViewById(R.id.splitAdvRecyclerView);
         splitAdvRecyclerView = findViewById(R.id.splitAdvRecyclerView);
         txtlrnumber = findViewById(R.id.split_advance_txtlrno);
         initializeView();
@@ -109,7 +110,7 @@ public class SplitAdvanActivity extends AppCompatActivity {
 
         loadData();
 
-       imgbtnAdd.setOnClickListener(new View.OnClickListener() {
+        imgbtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OpenAddExpenseDialog();
@@ -124,7 +125,6 @@ public class SplitAdvanActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SplitAdvHeadResponse> call, Response<SplitAdvHeadResponse> response) {
                 advanceList = response.body().getSplitAdvHeading();
-                getHeaderAndChild(advanceList);
             }
 
             @Override
@@ -138,8 +138,10 @@ public class SplitAdvanActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SplitAdvDataResponse> call, Response<SplitAdvDataResponse> response) {
                 splitAdvanceChildList = response.body().getSplitAdvanceData();
+                advSize = splitAdvanceChildList.size();
+                getHeaderAndChild(advanceList);
 
-                Log.d("TESTCALL",String.valueOf(splitAdvanceChildList.size()));
+                Log.d("TESTCALL1", String.valueOf(advSize));
             }
 
             @Override
@@ -150,93 +152,107 @@ public class SplitAdvanActivity extends AppCompatActivity {
 
     }
 
-    private void getHeaderAndChild(List<SplitAdvHead> splitAdvHeads){
+    private void getHeaderAndChild(List<SplitAdvHead> splitAdvHeads) {
 
-        for (SplitAdvHead splitHead : splitAdvHeads ){
+        for (SplitAdvHead splitHead : splitAdvHeads) {
             List<SplitAdvHead> splitAdvHeads1 = mHeading.get(splitHead.getTrip_exp_type());
-            if(splitAdvHeads1 == null){
+            if (splitAdvHeads1 == null) {
                 splitAdvHeads1 = new ArrayList<>();
             }
             splitAdvHeads1.add(splitHead);
-            mHeading.put(splitHead.getTrip_exp_type(),splitAdvHeads1);
+            mHeading.put(splitHead.getTrip_exp_type(), splitAdvHeads1);
         }
 
-        Log.d("Map",mHeading.toString());
+        Log.d("Map", mHeading.toString());
         Iterator it = mHeading.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
+            Map.Entry pair = (Map.Entry) it.next();
             Log.d("Key", pair.getKey().toString());
             //splitAdvances1.put(pair.getKey().toString(),pair.getValue().toString());
             splitAdvances2 = (List<SplitAdvHead>) pair.getValue();
-            hashMap.put(pair.getKey().toString(),splitAdvances2.get(0).getAmount());
+            hashMap.put(pair.getKey().toString(), splitAdvances2.get(0).getAmount());
 
-           //expandablePlaceHolderView.addView(new SplitAdvHeadViewHolder(this, pair.getKey().toString(),"Rs."+splitAdvances2.get(0).getAmount()));
+            //expandablePlaceHolderView.addView(new SplitAdvHeadViewHolder(this, pair.getKey().toString(),"Rs."+splitAdvances2.get(0).getAmount()));
             /*for (SplitAdvHead tripAdvance : splitAdvances2){
                 expandablePlaceHolderView.addView(new SplitAdvItemViewHolder(this, tripAdvance));
             }*/
             it.remove();
         }
 
-       for(String head : hashMap.keySet()){
-           String amount = hashMap.get(head);
-            countHead = countHead+1;
-           Log.d("DeepakTest","Key = " + head + ", Value = " + amount);
-       }
+        for (String head : hashMap.keySet()) {
+            String amount = hashMap.get(head);
+            countHead = countHead + 1;
+            Log.d("DeepakTest", "Key = " + head + ", Value = " + amount);
+        }
 
         getSplitAdvanceHeader();
-        splitAdvanceAdapter = new SplitAdvanceAdapter(splitAdvanceHeader,this);
+        splitAdvanceAdapter = new SplitAdvanceAdapter(splitAdvanceHeader, this);
         splitAdvRecyclerView.setLayoutManager(new LinearLayoutManager(SplitAdvanActivity.this));
         splitAdvRecyclerView.setAdapter(splitAdvanceAdapter);
     }
 
     private void getSplitAdvanceHeader() {
 
-        int ab=0;
         splitAdvanceHeader = new ArrayList<>(countHead);
         //for(int i = 0; i < countHead; i++)
-        for (String head1 : hashMap.keySet())
-            {
+        for (String head1 : hashMap.keySet()) {
+            String amt = hashMap.get(head1);
                 /*if(splitAdvanceChildList.get(ab).getSplit_head().equals("CASH")){
                     advDataList = splitAdvanceChildList;
                 }*/
-
-                String amt = hashMap.get(head1);
+            Log.d("TESTCALL2", head1);
+            Log.d("TESTCALL3", String.valueOf(advSize));
+            for (int i = 0; i < advSize; i++) {
+                String headType = splitAdvanceChildList.get(i).getSplit_head().toString();
+                Log.d("TESTCALL4", String.valueOf(advSize));
 
                 //splitAdvanceChildList = new ArrayList<>();
                 if (head1.equals("OTHERS")) {
+                    if(headType.equals(head1)){
+                       advDataList = new ArrayList<>();
+                        advDataList.add(new SplitAdvData(splitAdvanceChildList.get(i).getSplit_date(),splitAdvanceChildList.get(i).getBranch_name(),splitAdvanceChildList.get(i).getSplit_type(),
+                                splitAdvanceChildList.get(i).getAmount(), splitAdvanceChildList.get(i).getDescription(), splitAdvanceChildList.get(i).getSplit_head()));
+                        splitAdvanceHeader.add(new SplitAdvHeader(head1, advDataList));
+                    }
                     //splitAdvanceChildList.add(new SplitAdvData("05 June'19", "HO","FUEL", "Rs."+amt, "Fuel Charge Day1", head1));
-                    splitAdvanceHeader.add(new SplitAdvHeader(head1, splitAdvanceChildList));
+
                 }
                 if (head1.equals("CASH")) {
-                    //splitAdvanceChildList.add(new SplitAdvData("05 June'19", "HO","FUEL", "Rs."+amt, "Fuel Charge Day1", head1));
-                    splitAdvanceHeader.add(new SplitAdvHeader(head1, splitAdvanceChildList));
+                    if(headType.equals(head1)){
+                        advDataList = new ArrayList<>();
+                        advDataList.add(new SplitAdvData(splitAdvanceChildList.get(i).getSplit_date(),splitAdvanceChildList.get(i).getBranch_name(),splitAdvanceChildList.get(i).getSplit_type(),
+                                splitAdvanceChildList.get(i).getAmount(), splitAdvanceChildList.get(i).getDescription(), splitAdvanceChildList.get(i).getSplit_head()));
+                        splitAdvanceHeader.add(new SplitAdvHeader(head1, advDataList));
+                    }
                 }
                 if (head1.equals("IOCL")) {
-                    //splitAdvanceChildList.add(new SplitAdvData("05 June'19", "HO","FUEL", "Rs."+amt, "Fuel Charge Day1", head1));
-                    splitAdvanceHeader.add(new SplitAdvHeader(head1, splitAdvanceChildList));
+                    if(headType.equals(head1)){
+                        advDataList = new ArrayList<>();
+                        advDataList.add(new SplitAdvData(splitAdvanceChildList.get(i).getSplit_date(),splitAdvanceChildList.get(i).getBranch_name(),splitAdvanceChildList.get(i).getSplit_type(),
+                                splitAdvanceChildList.get(i).getAmount(), splitAdvanceChildList.get(i).getDescription(), splitAdvanceChildList.get(i).getSplit_head()));
+                        splitAdvanceHeader.add(new SplitAdvHeader(head1, advDataList));
+                    }
                 }
-
-                //ab = ab+1;
             }
+        }
     }
 
 
     private void OpenAddExpenseDialog() {
-        Button btnSave,btnCancel;
-        ImageButton imgBtnClose,imgBtnDate;
+        Button btnSave, btnCancel;
+        ImageButton imgBtnClose, imgBtnDate;
         Spinner spnSplit;
         EditText edtBranch;
-        EditText edtDate,edtAmount,edtDesc;
+        EditText edtDate, edtAmount, edtDesc;
 
-        final Dialog dialog=new Dialog(SplitAdvanActivity.this);
+        final Dialog dialog = new Dialog(SplitAdvanActivity.this);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.split_add_dialog);
-        if (dialog.getWindow()!=null)
-        {
+        if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
-            WindowManager.LayoutParams params=dialog.getWindow().getAttributes();
-            params.gravity= Gravity.CENTER_VERTICAL;
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.gravity = Gravity.CENTER_VERTICAL;
         }
 
         imgBtnClose = dialog.findViewById(R.id.add_split_imgBtnClose);
