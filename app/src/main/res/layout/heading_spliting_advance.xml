@@ -54,7 +54,20 @@
         android:textColor="@color/colorongoing"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/heading_txt_advType"
         app:layout_constraintStart_toEndOf="@+id/heading_txt_advType"
         app:layout_constraintTop_toTopOf="@+id/heading_txt_advType" />
+
+    <ImageButton
+        android:id="@+id/imgbtn_splitting_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@null"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView13"
+        app:layout_constraintEnd_toStartOf="@+id/imageView13"
+        app:layout_constraintTop_toTopOf="@+id/imageView13" />
 </android.support.constraint.ConstraintLayout>

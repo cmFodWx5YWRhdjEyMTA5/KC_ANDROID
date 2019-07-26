@@ -27,17 +27,13 @@ import com.deepak.kcl.Adapter.SplitAdvanceAdapter;
 import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
-import com.deepak.kcl.ViewHolders.SplitAdvHeadViewHolder;
-import com.deepak.kcl.ViewHolders.SplitAdvItemViewHolder;
 import com.deepak.kcl.models.BranchTrips;
-import com.deepak.kcl.models.SplitAdvChild;
 import com.deepak.kcl.models.SplitAdvData;
 import com.deepak.kcl.models.SplitAdvDataResponse;
 import com.deepak.kcl.models.SplitAdvHead;
 import com.deepak.kcl.models.SplitAdvHeadResponse;
 import com.deepak.kcl.models.SplitAdvHeader;
 import com.deepak.kcl.models.User;
-import com.mindorks.placeholderview.ExpandablePlaceHolderView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,7 +54,6 @@ public class SplitAdvanActivity extends AppCompatActivity {
     private List<SplitAdvData> advDataList;
     List<SplitAdvHead> splitAdvances2;
     Toolbar toolbar;
-    ImageButton imgbtnAdd;
     DatePickerDialog datePickerDialog;
     int year;
     int month;
@@ -87,7 +82,6 @@ public class SplitAdvanActivity extends AppCompatActivity {
 
     private void initView() {
         toolbar = findViewById(R.id.splitAdvanceToolbar);
-        imgbtnAdd = findViewById(R.id.heading_btn_splitAdd);
         splitAdvRecyclerView = findViewById(R.id.splitAdvRecyclerView);
         txtlrnumber = findViewById(R.id.split_advance_txtlrno);
         initializeView();
@@ -107,13 +101,6 @@ public class SplitAdvanActivity extends AppCompatActivity {
         mHeading = new HashMap<>();
 
         loadData();
-
-        imgbtnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenAddExpenseDialog();
-            }
-        });
     }
 
     private void loadData() {
@@ -130,7 +117,7 @@ public class SplitAdvanActivity extends AppCompatActivity {
                     public void onResponse(Call<SplitAdvDataResponse> call, Response<SplitAdvDataResponse> response) {
                         splitAdvanceChildList = response.body().getSplitAdvanceData();
                         advSize = splitAdvanceChildList.size();
-                        Log.d("TESTCALL1", String.valueOf(advSize));
+                        Log.d("TestData1", String.valueOf(advSize));
                         getHeaderAndChild(advanceList);
                     }
 
@@ -177,9 +164,6 @@ public class SplitAdvanActivity extends AppCompatActivity {
         }
 
         getSplitAdvanceHeader();
-        splitAdvanceAdapter = new SplitAdvanceAdapter(splitAdvanceHeader, this);
-        splitAdvRecyclerView.setLayoutManager(new LinearLayoutManager(SplitAdvanActivity.this));
-        splitAdvRecyclerView.setAdapter(splitAdvanceAdapter);
     }
 
     private void getSplitAdvanceHeader() {
@@ -188,38 +172,44 @@ public class SplitAdvanActivity extends AppCompatActivity {
         splitAdvanceHeader = new ArrayList<>(countHead);
         for (String head1 : hashMap.keySet()) {
             String amt = hashMap.get(head1);
-
+            String title = head1+ "  "+"RS."+ amt;
+            Log.d("TestData2",head1);
             i=m;
             flag=true;
             for (i = 0; i < advSize; i++) {
                 String headType = splitAdvanceChildList.get(i).getSplit_head().toString();
-
+                Log.d("TestData3",head1);
                 advDataList = new ArrayList<>();
                 if (head1.equals(headType)) {
                     flag=false;
+                    Log.d("TestData4",head1);
                     for (int j = 0; j < advSize; j++) {
+                        Log.d("TestData5",head1);
                         String head = splitAdvanceChildList.get(j).getSplit_head().toString();
                             if(head.equals(head1)){
                                     advDataList.add(new SplitAdvData(splitAdvanceChildList.get(j).getSplit_date(), splitAdvanceChildList.get(j).getBranch_name(), splitAdvanceChildList.get(j).getSplit_type(),
                                     splitAdvanceChildList.get(j).getAmount(), splitAdvanceChildList.get(j).getDescription(), splitAdvanceChildList.get(j).getSplit_head()));
                         }
                     }
-                    splitAdvanceHeader.add(new SplitAdvHeader(head1, advDataList));
+                    splitAdvanceHeader.add(new SplitAdvHeader(title, advDataList));
                     break;
                 }
-
             }
             if(flag==true)
             {
-                splitAdvanceHeader.add(new SplitAdvHeader(head1, advDataList));
+                Log.d("TestData6",head1);
+                splitAdvanceHeader.add(new SplitAdvHeader(title, advDataList));
             }
             m=m+1;
-
         }
+
+        splitAdvanceAdapter = new SplitAdvanceAdapter(splitAdvanceHeader, this);
+        splitAdvRecyclerView.setLayoutManager(new LinearLayoutManager(SplitAdvanActivity.this));
+        splitAdvRecyclerView.setAdapter(splitAdvanceAdapter);
     }
 
 
-    private void OpenAddExpenseDialog() {
+    public void OpenAddExpenseDialog() {
         Button btnSave, btnCancel;
         ImageButton imgBtnClose, imgBtnDate;
         Spinner spnSplit;

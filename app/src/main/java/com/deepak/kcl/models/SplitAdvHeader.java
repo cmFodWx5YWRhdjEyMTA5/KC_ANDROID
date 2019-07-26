@@ -22,4 +22,5 @@ public class SplitAdvHeader extends ExpandableGroup {
     public SplitAdvHeader(String title, List items) {
         super(title, items);
     }
+
 }

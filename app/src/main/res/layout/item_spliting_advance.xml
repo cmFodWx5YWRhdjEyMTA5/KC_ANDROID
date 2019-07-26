@@ -168,6 +168,7 @@
         android:layout_marginRight="8dp"
         android:background="@null"
         android:src="@drawable/ic_edit_blue"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/item_split_btnDelete"
         app:layout_constraintEnd_toStartOf="@+id/item_split_btnDelete"
         app:layout_constraintTop_toTopOf="@+id/item_split_btnDelete" />
