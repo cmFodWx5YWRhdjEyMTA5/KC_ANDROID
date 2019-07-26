@@ -57,8 +57,6 @@ public class SplitAdvanActivity extends AppCompatActivity {
     private List<SplitAdvHead> advanceList;
     private List<SplitAdvData> advDataList;
     List<SplitAdvHead> splitAdvances2;
-    Map<String, String> splitAdvances1;
-    private ExpandablePlaceHolderView expandablePlaceHolderView;
     Toolbar toolbar;
     ImageButton imgbtnAdd;
     DatePickerDialog datePickerDialog;
@@ -69,6 +67,7 @@ public class SplitAdvanActivity extends AppCompatActivity {
     User user;
     int countHead = 0;
     int advSize = 0;
+    boolean flag;
 
     private RecyclerView splitAdvRecyclerView;
     private SplitAdvanceAdapter splitAdvanceAdapter;
@@ -89,7 +88,6 @@ public class SplitAdvanActivity extends AppCompatActivity {
     private void initView() {
         toolbar = findViewById(R.id.splitAdvanceToolbar);
         imgbtnAdd = findViewById(R.id.heading_btn_splitAdd);
-        // expandablePlaceHolderView = findViewById(R.id.splitAdvRecyclerView);
         splitAdvRecyclerView = findViewById(R.id.splitAdvRecyclerView);
         txtlrnumber = findViewById(R.id.split_advance_txtlrno);
         initializeView();
@@ -121,31 +119,30 @@ public class SplitAdvanActivity extends AppCompatActivity {
     private void loadData() {
 
         Call<SplitAdvHeadResponse> call = RetrofitClient.getInstance().getApi().getSplitAdvHeading(branchTrips.getLR());
+        Call<SplitAdvDataResponse> call1 = RetrofitClient.getInstance().getApi().getSplitAdvData(branchTrips.getLR());
         call.enqueue(new Callback<SplitAdvHeadResponse>() {
             @Override
             public void onResponse(Call<SplitAdvHeadResponse> call, Response<SplitAdvHeadResponse> response) {
                 advanceList = response.body().getSplitAdvHeading();
+
+                call1.enqueue(new Callback<SplitAdvDataResponse>() {
+                    @Override
+                    public void onResponse(Call<SplitAdvDataResponse> call, Response<SplitAdvDataResponse> response) {
+                        splitAdvanceChildList = response.body().getSplitAdvanceData();
+                        advSize = splitAdvanceChildList.size();
+                        Log.d("TESTCALL1", String.valueOf(advSize));
+                        getHeaderAndChild(advanceList);
+                    }
+
+                    @Override
+                    public void onFailure(Call<SplitAdvDataResponse> call, Throwable t) {
+                        Toast.makeText(SplitAdvanActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
             public void onFailure(Call<SplitAdvHeadResponse> call, Throwable t) {
-                Toast.makeText(SplitAdvanActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        Call<SplitAdvDataResponse> call1 = RetrofitClient.getInstance().getApi().getSplitAdvData(branchTrips.getLR());
-        call1.enqueue(new Callback<SplitAdvDataResponse>() {
-            @Override
-            public void onResponse(Call<SplitAdvDataResponse> call, Response<SplitAdvDataResponse> response) {
-                splitAdvanceChildList = response.body().getSplitAdvanceData();
-                advSize = splitAdvanceChildList.size();
-                getHeaderAndChild(advanceList);
-
-                Log.d("TESTCALL1", String.valueOf(advSize));
-            }
-
-            @Override
-            public void onFailure(Call<SplitAdvDataResponse> call, Throwable t) {
                 Toast.makeText(SplitAdvanActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -163,19 +160,13 @@ public class SplitAdvanActivity extends AppCompatActivity {
             mHeading.put(splitHead.getTrip_exp_type(), splitAdvHeads1);
         }
 
-        Log.d("Map", mHeading.toString());
         Iterator it = mHeading.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
-            Log.d("Key", pair.getKey().toString());
-            //splitAdvances1.put(pair.getKey().toString(),pair.getValue().toString());
+
             splitAdvances2 = (List<SplitAdvHead>) pair.getValue();
             hashMap.put(pair.getKey().toString(), splitAdvances2.get(0).getAmount());
 
-            //expandablePlaceHolderView.addView(new SplitAdvHeadViewHolder(this, pair.getKey().toString(),"Rs."+splitAdvances2.get(0).getAmount()));
-            /*for (SplitAdvHead tripAdvance : splitAdvances2){
-                expandablePlaceHolderView.addView(new SplitAdvItemViewHolder(this, tripAdvance));
-            }*/
             it.remove();
         }
 
@@ -192,48 +183,38 @@ public class SplitAdvanActivity extends AppCompatActivity {
     }
 
     private void getSplitAdvanceHeader() {
-
+        int m = 0;
+        int i;
         splitAdvanceHeader = new ArrayList<>(countHead);
-        //for(int i = 0; i < countHead; i++)
         for (String head1 : hashMap.keySet()) {
             String amt = hashMap.get(head1);
-                /*if(splitAdvanceChildList.get(ab).getSplit_head().equals("CASH")){
-                    advDataList = splitAdvanceChildList;
-                }*/
-            Log.d("TESTCALL2", head1);
-            Log.d("TESTCALL3", String.valueOf(advSize));
-            for (int i = 0; i < advSize; i++) {
+
+            i=m;
+            flag=true;
+            for (i = 0; i < advSize; i++) {
                 String headType = splitAdvanceChildList.get(i).getSplit_head().toString();
-                Log.d("TESTCALL4", String.valueOf(advSize));
 
-                //splitAdvanceChildList = new ArrayList<>();
-                if (head1.equals("OTHERS")) {
-                    if(headType.equals(head1)){
-                       advDataList = new ArrayList<>();
-                        advDataList.add(new SplitAdvData(splitAdvanceChildList.get(i).getSplit_date(),splitAdvanceChildList.get(i).getBranch_name(),splitAdvanceChildList.get(i).getSplit_type(),
-                                splitAdvanceChildList.get(i).getAmount(), splitAdvanceChildList.get(i).getDescription(), splitAdvanceChildList.get(i).getSplit_head()));
-                        splitAdvanceHeader.add(new SplitAdvHeader(head1, advDataList));
+                advDataList = new ArrayList<>();
+                if (head1.equals(headType)) {
+                    flag=false;
+                    for (int j = 0; j < advSize; j++) {
+                        String head = splitAdvanceChildList.get(j).getSplit_head().toString();
+                            if(head.equals(head1)){
+                                    advDataList.add(new SplitAdvData(splitAdvanceChildList.get(j).getSplit_date(), splitAdvanceChildList.get(j).getBranch_name(), splitAdvanceChildList.get(j).getSplit_type(),
+                                    splitAdvanceChildList.get(j).getAmount(), splitAdvanceChildList.get(j).getDescription(), splitAdvanceChildList.get(j).getSplit_head()));
+                        }
                     }
-                    //splitAdvanceChildList.add(new SplitAdvData("05 June'19", "HO","FUEL", "Rs."+amt, "Fuel Charge Day1", head1));
+                    splitAdvanceHeader.add(new SplitAdvHeader(head1, advDataList));
+                    break;
+                }
 
-                }
-                if (head1.equals("CASH")) {
-                    if(headType.equals(head1)){
-                        advDataList = new ArrayList<>();
-                        advDataList.add(new SplitAdvData(splitAdvanceChildList.get(i).getSplit_date(),splitAdvanceChildList.get(i).getBranch_name(),splitAdvanceChildList.get(i).getSplit_type(),
-                                splitAdvanceChildList.get(i).getAmount(), splitAdvanceChildList.get(i).getDescription(), splitAdvanceChildList.get(i).getSplit_head()));
-                        splitAdvanceHeader.add(new SplitAdvHeader(head1, advDataList));
-                    }
-                }
-                if (head1.equals("IOCL")) {
-                    if(headType.equals(head1)){
-                        advDataList = new ArrayList<>();
-                        advDataList.add(new SplitAdvData(splitAdvanceChildList.get(i).getSplit_date(),splitAdvanceChildList.get(i).getBranch_name(),splitAdvanceChildList.get(i).getSplit_type(),
-                                splitAdvanceChildList.get(i).getAmount(), splitAdvanceChildList.get(i).getDescription(), splitAdvanceChildList.get(i).getSplit_head()));
-                        splitAdvanceHeader.add(new SplitAdvHeader(head1, advDataList));
-                    }
-                }
             }
+            if(flag==true)
+            {
+                splitAdvanceHeader.add(new SplitAdvHeader(head1, advDataList));
+            }
+            m=m+1;
+
         }
     }
 
