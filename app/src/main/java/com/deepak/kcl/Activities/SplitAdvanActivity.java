@@ -54,11 +54,6 @@ public class SplitAdvanActivity extends AppCompatActivity {
     private List<SplitAdvData> advDataList;
     List<SplitAdvHead> splitAdvances2;
     Toolbar toolbar;
-    DatePickerDialog datePickerDialog;
-    int year;
-    int month;
-    int dayOfMonth;
-    Calendar calendar;
     User user;
     int countHead = 0;
     int advSize = 0;
@@ -187,7 +182,7 @@ public class SplitAdvanActivity extends AppCompatActivity {
                         Log.d("TestData5",head1);
                         String head = splitAdvanceChildList.get(j).getSplit_head().toString();
                             if(head.equals(head1)){
-                                    advDataList.add(new SplitAdvData(splitAdvanceChildList.get(j).getSplit_date(), splitAdvanceChildList.get(j).getBranch_name(), splitAdvanceChildList.get(j).getSplit_type(),
+                                    advDataList.add(new SplitAdvData(splitAdvanceChildList.get(j).getSplit_advId(),splitAdvanceChildList.get(j).getSplit_date(), splitAdvanceChildList.get(j).getBranch_name(), splitAdvanceChildList.get(j).getSplit_type(),
                                     splitAdvanceChildList.get(j).getAmount(), splitAdvanceChildList.get(j).getDescription(), splitAdvanceChildList.get(j).getSplit_head()));
                         }
                     }
@@ -206,85 +201,7 @@ public class SplitAdvanActivity extends AppCompatActivity {
         splitAdvanceAdapter = new SplitAdvanceAdapter(splitAdvanceHeader, this);
         splitAdvRecyclerView.setLayoutManager(new LinearLayoutManager(SplitAdvanActivity.this));
         splitAdvRecyclerView.setAdapter(splitAdvanceAdapter);
-    }
-
-
-    public void OpenAddExpenseDialog() {
-        Button btnSave, btnCancel;
-        ImageButton imgBtnClose, imgBtnDate;
-        Spinner spnSplit;
-        EditText edtBranch;
-        EditText edtDate, edtAmount, edtDesc;
-
-        final Dialog dialog = new Dialog(SplitAdvanActivity.this);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.split_add_dialog);
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.gravity = Gravity.CENTER_VERTICAL;
-        }
-
-        imgBtnClose = dialog.findViewById(R.id.add_split_imgBtnClose);
-        btnSave = dialog.findViewById(R.id.add_split_btnSave);
-        btnCancel = dialog.findViewById(R.id.add_split_btnCancel);
-        edtBranch = dialog.findViewById(R.id.add_split_edtBranch);
-        spnSplit = dialog.findViewById(R.id.add_split_spnType);
-        imgBtnDate = dialog.findViewById(R.id.add_split_imgBtnDate);
-        edtDate = dialog.findViewById(R.id.add_split_edtDate);
-        edtAmount = dialog.findViewById(R.id.add_split_edtAmount);
-        edtDesc = dialog.findViewById(R.id.add_split_edtDesc);
-
-
-        edtDate.setKeyListener(null);
-
-        imgBtnDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calendar = Calendar.getInstance();
-                year = calendar.get(Calendar.YEAR);
-                month = calendar.get(Calendar.MONTH);
-                dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog = new DatePickerDialog(SplitAdvanActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                edtDate.setText(day + "/" + (month + 1) + "/" + year);
-                            }
-                        }, year, month, dayOfMonth);
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
-                datePickerDialog.show();
-            }
-        });
-
-        edtBranch.setText(user.getBranch_name());
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(
-                this, R.array.SplitType, android.R.layout.simple_spinner_item);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnSplit.setAdapter(adapter1);
-
-        imgBtnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-        });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-        });
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-        });
-
-        dialog.show();
+        splitAdvanceAdapter.notifyDataSetChanged();
     }
 
     @Override

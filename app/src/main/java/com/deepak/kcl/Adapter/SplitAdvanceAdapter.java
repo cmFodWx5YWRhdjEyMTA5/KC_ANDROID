@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +19,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.deepak.kcl.Activities.SplitAdvanActivity;
 import com.deepak.kcl.Networking.RetrofitClient;
 import com.deepak.kcl.R;
 import com.deepak.kcl.Storage.SharedPrefManager;
-import com.deepak.kcl.models.BranchExpenseResponse;
+import com.deepak.kcl.models.BranchTrips;
 import com.deepak.kcl.models.SplitAdvData;
+import com.deepak.kcl.models.SplitAdvDataResponse;
 import com.deepak.kcl.models.User;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
@@ -44,11 +42,13 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdva
 
     private Context mContext;
     DatePickerDialog datePickerDialog;
+    SplitAdvData splitAdvData;
     int year;
     int month;
     int dayOfMonth;
     Calendar calendar;
     User user;
+    BranchTrips branchTrips;
 
     public SplitAdvanceAdapter(List<? extends ExpandableGroup> groups, Context context) {
         super(groups);
@@ -69,7 +69,7 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdva
 
     @Override
     public void onBindChildViewHolder(SplitAdvItemViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
-        SplitAdvData splitAdvData = (SplitAdvData) group.getItems().get(childIndex);
+        splitAdvData = (SplitAdvData) group.getItems().get(childIndex);
 
         holder.setSplitDate(splitAdvData.getSplit_date());
         holder.setSplitType(splitAdvData.getSplit_type());
@@ -80,8 +80,7 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdva
         holder.imgBtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Delete", Toast.LENGTH_SHORT).show();
-                OpenDeleteDialog();
+                OpenDeleteDialog(childIndex,splitAdvData.getSplit_advId());
             }
         });
     }
@@ -92,7 +91,11 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdva
         holder.imgBtnSplitDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OpenAddExpenseDialog();
+                String firstWord = group.getTitle();
+                if(firstWord.contains(" ")){
+                    firstWord= firstWord.substring(0, firstWord.indexOf(" "));
+                }
+                OpenAddExpenseDialog(firstWord);
             }
         });
     }
@@ -111,7 +114,6 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdva
             txtBranch = itemView.findViewById(R.id.item_split_txtBranch);
             txtDesc = itemView.findViewById(R.id.item_split_txtDesc);
             imgBtnDelete = itemView.findViewById(R.id.item_split_btnDelete);
-
         }
 
         public void setSplitDate(String dt)
@@ -163,7 +165,7 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdva
         }
     }
 
-    private void OpenDeleteDialog() {
+    private void OpenDeleteDialog(int pos,String splitId) {
         Button btnDelete,btncancel;
 
         final Dialog dialog=new Dialog(mContext);
@@ -177,11 +179,10 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdva
             params.gravity= Gravity.CENTER_VERTICAL;
         }
 
-        //user = SharedPrefManager.getInstance(mContext).getUser();
+        user = SharedPrefManager.getInstance(mContext).getUser();
 
         btnDelete = dialog.findViewById(R.id.dialog_delete_btndelete);
         btncancel = dialog.findViewById(R.id.dialog_delete_btnCancel);
-
 
         btncancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,21 +194,19 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdva
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*removeItem(pos);
-                Call<BranchExpenseResponse> call = RetrofitClient.getInstance().getApi().DeleteBranchExp(branchExpId,String.valueOf(user.getUser_id()));
-                call.enqueue(new Callback<BranchExpenseResponse>() {
+                //removeItem(pos);
+                Call<SplitAdvDataResponse> call = RetrofitClient.getInstance().getApi().DeleteSplitAdvance(Integer.parseInt(splitId),String.valueOf(user.getUser_id()));
+                call.enqueue(new Callback<SplitAdvDataResponse>() {
                     @Override
-                    public void onResponse(Call<BranchExpenseResponse> call, Response<BranchExpenseResponse> response) {
+                    public void onResponse(Call<SplitAdvDataResponse> call, Response<SplitAdvDataResponse> response) {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
                     }
 
                     @Override
-                    public void onFailure(Call<BranchExpenseResponse> call, Throwable t) {
+                    public void onFailure(Call<SplitAdvDataResponse> call, Throwable t) {
                         Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                });*/
-
+                });
                 dialog.cancel();
             }
         });
@@ -215,7 +214,7 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdva
         dialog.show();
     }
 
-    public void OpenAddExpenseDialog() {
+    public void OpenAddExpenseDialog(String splitHead) {
         Button btnSave, btnCancel;
         ImageButton imgBtnClose, imgBtnDate;
         Spinner spnSplit;
@@ -242,6 +241,7 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdva
         edtAmount = dialog.findViewById(R.id.add_split_edtAmount);
         edtDesc = dialog.findViewById(R.id.add_split_edtDesc);
         user = SharedPrefManager.getInstance(mContext).getUser();
+        branchTrips = SharedPrefManager.getInstance(mContext).getBranchTrips();
 
         edtDate.setKeyListener(null);
 
@@ -286,6 +286,22 @@ public class SplitAdvanceAdapter extends ExpandableRecyclerViewAdapter<SplitAdva
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String dt = edtDate.getText().toString();
+                String splitType = spnSplit.getSelectedItem().toString();
+                String amt = edtAmount.getText().toString().trim();
+                String desc = edtDesc.getText().toString().trim();
+                Call<SplitAdvDataResponse> call = RetrofitClient.getInstance().getApi().insertSplitAdvance(branchTrips.getLR(),dt,String.valueOf(user.getBranch_id()),splitType,amt,desc,splitHead,user.getUser_id());
+                call.enqueue(new Callback<SplitAdvDataResponse>() {
+                    @Override
+                    public void onResponse(Call<SplitAdvDataResponse> call, Response<SplitAdvDataResponse> response) {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<SplitAdvDataResponse> call, Throwable t) {
+                        Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 dialog.cancel();
             }
         });

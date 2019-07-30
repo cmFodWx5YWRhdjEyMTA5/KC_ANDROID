@@ -2,6 +2,7 @@ package com.deepak.kcl.models;
 
 public class SplitAdvData {
 
+    private String split_advId;
     private String split_date;
     private String branch_name;
     private String split_type;
@@ -9,13 +10,18 @@ public class SplitAdvData {
     private String description;
     private String split_head;
 
-    public SplitAdvData(String split_date, String branch_name, String split_type, String amount, String description, String split_head) {
+    public SplitAdvData(String split_advId, String split_date, String branch_name, String split_type, String amount, String description, String split_head) {
+        this.split_advId = split_advId;
         this.split_date = split_date;
         this.branch_name = branch_name;
         this.split_type = split_type;
         this.amount = amount;
         this.description = description;
         this.split_head = split_head;
+    }
+
+    public String getSplit_advId() {
+        return split_advId;
     }
 
     public String getSplit_date() {

@@ -145,8 +145,28 @@ public interface Api {
             @Path("id") String id
     );
 
+    @FormUrlEncoded
+    @POST("insertSplitAdvance")
+    Call<SplitAdvDataResponse> insertSplitAdvance(
+            @Field("lr_number") String lr_number,
+            @Field("split_date") String split_date,
+            @Field("branch_id") String branch_id,
+            @Field("split_type") String split_type,
+            @Field("amount") String amount,
+            @Field("description") String description,
+            @Field("split_head") String split_head,
+            @Field("userId") int userid
+    );
+
     @GET("getSplitAdvData/{id}")
     Call<SplitAdvDataResponse> getSplitAdvData(
             @Path("id") String id
+    );
+
+    @FormUrlEncoded
+    @PUT("DeleteSplitAdvance/{id}")
+    Call<SplitAdvDataResponse> DeleteSplitAdvance(
+            @Path("id") int id,
+            @Field("tripid") String tripid
     );
 }
